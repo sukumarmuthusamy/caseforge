@@ -41,9 +41,16 @@ test("the second case is chosen in the dialog, played to its end and scored", as
   await expect(dialog.locator(".policy-row", { hasText: first.agents[0].name })).toHaveCount(0);
 
   await dialog.getByLabel("Seed").fill("7");
-  await dialog.getByRole("button", { name: "Open the case" }).click();
+  // An older run may already be on screen at "Tick 0 of 0", so that label does not say the new run is
+  // open. Take the new run's id from the server's reply and wait until the page has loaded that run.
+  const [created] = await Promise.all([
+    page.waitForResponse((r) => r.url().endsWith("/api/runs") && r.request().method() === "POST").then((r) => r.json()),
+    dialog.getByRole("button", { name: "Open the case" }).click(),
+  ]);
+  await expect(page.getByLabel("Select run")).toHaveValue(created.id);
   await expect(tickLabel(page)).toContainText("Tick 0 of 0");
   const id = await currentRunId(page);
+  expect(id).toBe(created.id);
   let run = await getRun(request, id);
   expect(run.scenario_id).toBe(SECOND);
   expect(Object.keys(run.policies).sort()).toEqual(second.agents.map((a: any) => a.id).sort());
