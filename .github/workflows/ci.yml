@@ -1,0 +1,98 @@
+# Continuous integration: free-tier runners only, no secrets, no paid services, no network calls from the
+# tests, and nothing long. The expensive checks (the 720-run sweep comparison, the 520-run laboratory
+# collection) stay local: see docs/RELEASE.md for how and when to run them.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  CASEFORGE_LLM_ENABLED: "0" # model-backed agents stay off; nothing here may reach a network
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.13"]
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+          cache-dependency-path: backend/pyproject.toml
+      - run: python -m pip install -e ".[dev]"
+      - name: Tests
+        run: python -m pytest
+      - name: Scenarios pass their lint
+        run: python -m caseforge validate
+      - name: The laboratory's variants lint, and this build is the registered baseline
+        run: python -m caseforge lab check
+      - name: A narrated run completes and replays
+        run: python -m caseforge demo --seed 7
+      - name: One recorded laboratory run reproduces
+        run: python -m caseforge lab reproduce control --seed 0
+
+  frontend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - name: Type-check the app and the browser tests
+        run: npm run typecheck
+      - name: Build
+        run: npm run build
+
+  browser:
+    # Drives the built UI against the real server in the runner's own Chrome. Nothing is downloaded
+    # for it. It has not been seen to run on a hosted runner yet (docs/RELEASE.md), so a failure here
+    # should be read before it is trusted either way.
+    needs: [backend, frontend]
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: backend/pyproject.toml
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: python -m pip install -e "backend[dev]"
+      - run: npm ci --no-audit --no-fund
+        working-directory: frontend
+      - run: npm run e2e
+        working-directory: frontend
+        env:
+          CASEFORGE_PYTHON: python
+          CASEFORGE_E2E_BROWSER: chrome
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-traces
+          path: frontend/test-results
+          retention-days: 7

@@ -1,0 +1,845 @@
+{
+  "public": {
+    "id": "quiet_substitution",
+    "version": "1.1.0",
+    "case": {
+      "title": "The Quiet Substitution",
+      "briefing": "On Monday 10 March a visiting scholar noticed that the Ashby Hours, a fifteenth-century book of hours in the Treasury display case of the Calloway Library, is a modern facsimile. The original was verified in the case on Wednesday 5 March. Since then the case alarm has been off only twice: on Thursday from 18:00 to 20:30, during panel maintenance and a patrons' reception downstairs, and on Friday from 18:00 to 21:00, for loan preparation. The lock is undamaged. Nobody knows on which of the two evenings the book was exchanged.",
+      "object": "ashby_hours",
+      "crime_location": "treasury",
+      "suspects": [
+        "fenwick",
+        "marsh",
+        "castellan",
+        "ibarra"
+      ],
+      "max_ticks": 40
+    },
+    "entities": [
+      {
+        "id": "hale",
+        "kind": "person",
+        "name": "Insp. Nora Hale",
+        "description": "Investigating officer, art and antiques unit."
+      },
+      {
+        "id": "ibarra",
+        "kind": "person",
+        "name": "Lucia Ibarra",
+        "description": "Registrar of the library's collections."
+      },
+      {
+        "id": "osei",
+        "kind": "person",
+        "name": "Kwame Osei",
+        "description": "Head of security."
+      },
+      {
+        "id": "lindqvist",
+        "kind": "person",
+        "name": "Dr. Tove Lindqvist",
+        "description": "Conservation scientist called in from outside to examine the case and the facsimile."
+      },
+      {
+        "id": "fenwick",
+        "kind": "person",
+        "name": "Dr. Alan Fenwick",
+        "description": "Curator of manuscripts."
+      },
+      {
+        "id": "marsh",
+        "kind": "person",
+        "name": "Dana Marsh",
+        "description": "Book conservator."
+      },
+      {
+        "id": "castellan",
+        "kind": "person",
+        "name": "Hugo Castellan",
+        "description": "Rare-book dealer, a guest at Thursday's reception."
+      },
+      {
+        "id": "pruitt",
+        "kind": "person",
+        "name": "Len Pruitt",
+        "description": "Night guard, on duty on Friday. A witness."
+      },
+      {
+        "id": "ashby_hours",
+        "kind": "object",
+        "name": "Ashby Hours",
+        "description": "Illuminated book of hours, about 1460, kept in the Treasury display case."
+      },
+      {
+        "id": "treasury",
+        "kind": "location",
+        "name": "Treasury",
+        "description": "Upper-floor room holding the display case.",
+        "zone": "treasury_wing"
+      },
+      {
+        "id": "great_hall",
+        "kind": "location",
+        "name": "Great Hall",
+        "description": "Ground-floor hall where Thursday's reception was held.",
+        "zone": "great_hall"
+      }
+    ],
+    "slots": [
+      {
+        "id": "thu_evening",
+        "label": "Thu 6 March, 18:00-20:30"
+      },
+      {
+        "id": "fri_evening",
+        "label": "Fri 7 March, 18:00-21:00"
+      }
+    ],
+    "agents": [
+      {
+        "id": "hale",
+        "role": "detective",
+        "goals": [
+          "Establish on which evening the book was exchanged, and by whom.",
+          "Accuse only when means, motive and opportunity are all supported.",
+          "Hear the accused before naming them."
+        ],
+        "disposition": {
+          "can_accuse": true,
+          "can_compel": true,
+          "initiative": "full",
+          "disclosure": {
+            "*": "closed"
+          }
+        }
+      },
+      {
+        "id": "ibarra",
+        "role": "registrar",
+        "goals": [
+          "Answer authorised requests for collection, key and personnel records.",
+          "Keep personnel files confidential."
+        ],
+        "disposition": {
+          "initiative": "reactive",
+          "shares_with": [
+            "hale"
+          ],
+          "disclosure": {
+            "hale": "open",
+            "*": "closed"
+          }
+        }
+      },
+      {
+        "id": "osei",
+        "role": "security",
+        "goals": [
+          "Account for every door, key and camera.",
+          "Show that the security staff did their job."
+        ],
+        "disposition": {
+          "initiative": "leads",
+          "shares_with": [
+            "hale"
+          ],
+          "disclosure": {
+            "hale": "open",
+            "*": "self_only"
+          }
+        }
+      },
+      {
+        "id": "lindqvist",
+        "role": "examiner",
+        "goals": [
+          "Examine the case, the lock and the facsimile.",
+          "Report findings to the investigating officer."
+        ],
+        "disposition": {
+          "initiative": "leads",
+          "shares_with": [
+            "hale"
+          ],
+          "disclosure": {
+            "hale": "open",
+            "*": "closed"
+          }
+        }
+      }
+    ],
+    "sources": [
+      {
+        "id": "treasury_scene",
+        "name": "Treasury scene",
+        "description": "The room, the display case and the desk beside it.",
+        "kind": "physical",
+        "operators": [
+          "hale",
+          "lindqvist"
+        ],
+        "searchable": [
+          "ashby_hours",
+          "treasury"
+        ]
+      },
+      {
+        "id": "curator_office",
+        "name": "Curator's office",
+        "description": "Dr. Fenwick's desk and working papers.",
+        "kind": "physical",
+        "operators": [
+          "hale"
+        ],
+        "searchable": [
+          "fenwick"
+        ]
+      },
+      {
+        "id": "conservation_lab",
+        "name": "Scientific examination",
+        "description": "Laboratory comparison of photographs and materials, on the investigator's request.",
+        "kind": "forensic",
+        "operators": [
+          "lindqvist"
+        ],
+        "requesters": [
+          "hale"
+        ],
+        "searchable": [
+          "loan_photograph"
+        ]
+      },
+      {
+        "id": "interview_pruitt",
+        "name": "Interview: Len Pruitt",
+        "description": "The night guard on duty on Friday.",
+        "kind": "person",
+        "operators": [
+          "hale",
+          "osei"
+        ],
+        "searchable": [
+          "ashby_hours",
+          "fenwick",
+          "pruitt"
+        ]
+      },
+      {
+        "id": "interview_fenwick",
+        "name": "Interview: Dr. Alan Fenwick",
+        "description": "Statement from the curator.",
+        "kind": "person",
+        "operators": [
+          "hale"
+        ],
+        "searchable": [
+          "fenwick"
+        ]
+      },
+      {
+        "id": "interview_marsh",
+        "name": "Interview: Dana Marsh",
+        "description": "Statement from the conservator.",
+        "kind": "person",
+        "operators": [
+          "hale"
+        ],
+        "searchable": [
+          "marsh"
+        ]
+      },
+      {
+        "id": "reception_staff",
+        "name": "Interviews: reception staff",
+        "description": "Stewards who worked Thursday's reception.",
+        "kind": "person",
+        "operators": [
+          "hale",
+          "osei"
+        ],
+        "searchable": [
+          "castellan"
+        ]
+      },
+      {
+        "id": "key_register",
+        "name": "Key register",
+        "description": "The signed register of keys drawn and returned.",
+        "kind": "system",
+        "operators": [
+          "ibarra"
+        ],
+        "requesters": [
+          "hale"
+        ],
+        "searchable": [
+          "case_key",
+          "fenwick",
+          "marsh",
+          "castellan",
+          "ibarra"
+        ]
+      },
+      {
+        "id": "collection_records",
+        "name": "Collection records",
+        "description": "Loans, correspondence and the condition-check schedule.",
+        "kind": "system",
+        "operators": [
+          "ibarra",
+          "lindqvist"
+        ],
+        "requesters": [
+          "hale"
+        ],
+        "searchable": [
+          "ashby_hours",
+          "treasury",
+          "fenwick",
+          "marsh",
+          "castellan"
+        ]
+      },
+      {
+        "id": "environment_monitor",
+        "name": "Environment monitor",
+        "description": "Readings from the microclimate loggers in the display cases.",
+        "kind": "system",
+        "operators": [
+          "ibarra"
+        ],
+        "requesters": [
+          "hale"
+        ],
+        "searchable": [
+          "case_logger"
+        ]
+      },
+      {
+        "id": "hr_files",
+        "name": "Personnel files",
+        "description": "Confidential staff files. Searched only on the investigator's authority; nothing in them may be passed on.",
+        "kind": "system",
+        "operators": [
+          "ibarra"
+        ],
+        "self_serve": false,
+        "requesters": [
+          "hale"
+        ],
+        "searchable": [
+          "fenwick",
+          "marsh",
+          "ibarra"
+        ]
+      },
+      {
+        "id": "security_systems",
+        "name": "Security systems",
+        "description": "Door controllers, the electronic key cabinet and cameras.",
+        "kind": "system",
+        "operators": [
+          "osei"
+        ],
+        "requesters": [
+          "hale"
+        ],
+        "searchable": [
+          "treasury",
+          "case_key",
+          "fenwick",
+          "marsh",
+          "castellan",
+          "ibarra"
+        ]
+      },
+      {
+        "id": "public_records",
+        "name": "Public records",
+        "description": "Court registers, published programmes and recordings.",
+        "kind": "external",
+        "operators": [
+          "hale"
+        ],
+        "searchable": [
+          "fenwick",
+          "marsh",
+          "castellan",
+          "ibarra"
+        ]
+      },
+      {
+        "id": "lodge_post",
+        "name": "Letters to the lodge",
+        "description": "Anonymous post and calls received at the security lodge.",
+        "kind": "external",
+        "operators": [
+          "osei"
+        ],
+        "searchable": [
+          "ashby_hours"
+        ]
+      }
+    ],
+    "interventions": [
+      {
+        "id": "volunteer_statement",
+        "label": "The conservator volunteers a statement",
+        "description": "Dana Marsh walks into the incident room and gives the inspector her account before anyone asks.",
+        "kind": "release_evidence",
+        "evidence": "E05",
+        "recipients": [
+          "hale"
+        ]
+      },
+      {
+        "id": "release_logger",
+        "label": "Fast-track the logger download",
+        "description": "The display case's microclimate logger is downloaded unprompted and the readings are sent to the inspector.",
+        "kind": "release_evidence",
+        "evidence": "E12",
+        "recipients": [
+          "hale"
+        ]
+      },
+      {
+        "id": "rumor_registrar",
+        "label": "Spread a rumor about the registrar",
+        "description": "An anonymous message reaches everyone: the registrar let the book out herself.",
+        "kind": "spread_rumor",
+        "proposition": "took(ibarra,ashby_hours)",
+        "text": "Anonymous message: 'Ask the registrar who signs for everything. She signed this one out herself.'",
+        "recipients": [
+          "hale",
+          "ibarra",
+          "osei",
+          "lindqvist"
+        ]
+      },
+      {
+        "id": "grant_security_access",
+        "label": "Give the inspector the security systems",
+        "description": "The inspector may query door, key-cabinet and camera records directly instead of asking the head of security.",
+        "kind": "grant_access",
+        "agent": "hale",
+        "source": "security_systems"
+      }
+    ]
+  },
+  "private": {
+    "hidden_entities": [
+      {
+        "id": "case_key",
+        "kind": "tool",
+        "name": "Case key K-12",
+        "description": "The only key cut for the Treasury display case."
+      },
+      {
+        "id": "case_logger",
+        "kind": "object",
+        "name": "Case logger",
+        "description": "Microclimate logger in the base of the display case."
+      },
+      {
+        "id": "loan_photograph",
+        "kind": "object",
+        "name": "Loan photograph",
+        "description": "Photograph of the open book taken for the loan file on Friday morning."
+      },
+      {
+        "id": "treasury_lobby",
+        "kind": "location",
+        "name": "Treasury lobby",
+        "description": "Landing at the head of the north stair, outside the Treasury door.",
+        "zone": "treasury_wing"
+      },
+      {
+        "id": "guildhall",
+        "kind": "location",
+        "name": "Guildhall",
+        "description": "Across the city, twenty minutes by car.",
+        "zone": "guildhall"
+      },
+      {
+        "id": "alder",
+        "kind": "person",
+        "name": "Imogen Alder",
+        "description": "Steward at Thursday's reception."
+      }
+    ],
+    "initial_holdings": {},
+    "observations": {
+      "ibarra": [
+        "at(ibarra,great_hall,thu_evening)"
+      ],
+      "osei": [
+        "at(castellan,great_hall,thu_evening)"
+      ]
+    },
+    "agendas": {
+      "ibarra": {
+        "protects": "marsh",
+        "deflects_to": "fenwick",
+        "leaks_to": "hale",
+        "note": "Ibarra and Marsh trained together and Ibarra believes she is being set up. She keeps Marsh's name out of whatever she hands over and makes sure the inspector sees what counts against the curator. She took no part in the exchange. She acts on this only under the 'deceptive' policy."
+      }
+    },
+    "evidence": [
+      {
+        "id": "E01",
+        "title": "Loan file in the curator's office",
+        "kind": "record",
+        "source": "curator_office",
+        "text": "Loan agreement draft for the Ashby Hours, annotated in Dr. Fenwick's hand and dated Friday 7 March: 'K-12 drawn 17:50. Pack Monday 08:00.' Clipped to it is the loan photograph of the open book, taken that morning at 10:15.",
+        "mentions": [
+          "fenwick",
+          "ashby_hours",
+          "case_key",
+          "loan_photograph"
+        ],
+        "asserts": [
+          "had(fenwick,case_key,fri_evening)"
+        ]
+      },
+      {
+        "id": "E02",
+        "title": "Night guard on when he last saw the book",
+        "kind": "testimony",
+        "speaker": "pruitt",
+        "source": "interview_pruitt",
+        "text": "Len Pruitt: 'Five to six on Friday I locked the gallery and looked in. The Hours was in its case, open at the Annunciation like always. So whatever happened, happened after that.'",
+        "mentions": [
+          "ashby_hours",
+          "treasury",
+          "pruitt"
+        ],
+        "asserts": [
+          "crime_at(treasury,fri_evening)"
+        ]
+      },
+      {
+        "id": "E03",
+        "title": "Night guard on the curator's evening",
+        "kind": "testimony",
+        "speaker": "pruitt",
+        "source": "interview_pruitt",
+        "text": "Len Pruitt: 'Dr. Fenwick came up at ten past six on Friday with his loan papers. He was still at the Treasury desk on my half-seven round. He had the case key on the desk in front of him.'",
+        "mentions": [
+          "fenwick",
+          "treasury",
+          "pruitt"
+        ],
+        "asserts": [
+          "at(fenwick,treasury,fri_evening)"
+        ]
+      },
+      {
+        "id": "E04",
+        "title": "Curator's statement",
+        "kind": "testimony",
+        "speaker": "fenwick",
+        "source": "interview_fenwick",
+        "text": "Dr. Alan Fenwick: 'I never opened the case on Friday. Read the logger in the case base, it will tell you so. But when I sat down at that desk I looked at the Hours through the glass, as I have every week for eleven years. The gold on the Annunciation initial was flat. No burnish. I told myself it was the new lighting. It was not the book. It was already a copy on Friday evening, and I would wager the loan photograph taken that morning shows a copy too.'",
+        "mentions": [
+          "fenwick",
+          "ashby_hours",
+          "treasury",
+          "case_logger",
+          "loan_photograph"
+        ],
+        "asserts": [
+          "crime_at(treasury,thu_evening)"
+        ]
+      },
+      {
+        "id": "E05",
+        "title": "Conservator's statement",
+        "kind": "testimony",
+        "speaker": "marsh",
+        "source": "interview_marsh",
+        "text": "Dana Marsh: 'I did the pre-loan condition check on Thursday evening, in the Treasury, as scheduled. I had the book out for twelve minutes. It was sound, every gathering, and it was the Ashby Hours when I locked the case. If it is a copy now, look at who was alone with it on Friday.'",
+        "mentions": [
+          "marsh",
+          "ashby_hours",
+          "treasury"
+        ],
+        "asserts": [
+          "at(marsh,treasury,thu_evening)",
+          "crime_at(treasury,fri_evening)"
+        ]
+      },
+      {
+        "id": "E06",
+        "title": "Steward's sighting",
+        "kind": "testimony",
+        "speaker": "alder",
+        "source": "reception_staff",
+        "text": "Imogen Alder, steward: 'During the speeches on Thursday I saw Mr. Castellan slip out of the hall and take the north stair. That stair only goes up to the Treasury.'",
+        "mentions": [
+          "castellan",
+          "treasury_lobby",
+          "alder"
+        ],
+        "asserts": [
+          "at(castellan,treasury_lobby,thu_evening)"
+        ]
+      },
+      {
+        "id": "E07",
+        "title": "Key register, Thursday",
+        "kind": "record",
+        "source": "key_register",
+        "text": "Key register, Thursday 6 March: K-12 (Treasury display case) out 18:04, D. Marsh, 'condition check, Hours'. In 20:11.",
+        "mentions": [
+          "case_key",
+          "marsh"
+        ],
+        "asserts": [
+          "had(marsh,case_key,thu_evening)"
+        ]
+      },
+      {
+        "id": "E08",
+        "title": "Key register, Friday",
+        "kind": "record",
+        "source": "key_register",
+        "text": "Key register, Friday 7 March: K-12 (Treasury display case) out 17:50, A. Fenwick, 'loan prep'. In Monday 08:19.",
+        "mentions": [
+          "case_key",
+          "fenwick"
+        ],
+        "asserts": [
+          "had(fenwick,case_key,fri_evening)"
+        ]
+      },
+      {
+        "id": "E09",
+        "title": "Curator's memorandum on the sale",
+        "kind": "record",
+        "source": "collection_records",
+        "text": "Memorandum from Dr. Fenwick to the trustees, 20 February: 'The Ashby Hours is to go on loan and then, I understand, to auction. I will not see it leave this library. I will do whatever is necessary to keep it here.'",
+        "mentions": [
+          "fenwick",
+          "ashby_hours"
+        ],
+        "asserts": [
+          "has_motive(fenwick)"
+        ]
+      },
+      {
+        "id": "E10",
+        "title": "Dealer's declined offer",
+        "kind": "record",
+        "source": "collection_records",
+        "text": "Letter from Hugo Castellan to the trustees, 3 February, marked 'declined': 'My client's offer for the Ashby Hours stands at any figure you care to name. He does not ask how a thing is acquired.'",
+        "mentions": [
+          "castellan",
+          "ashby_hours"
+        ],
+        "asserts": [
+          "has_motive(castellan)"
+        ]
+      },
+      {
+        "id": "E11",
+        "title": "Condition-check schedule",
+        "kind": "record",
+        "source": "collection_records",
+        "text": "Condition-check schedule: Thursday 6 March, 19:30, pre-loan check of the Ashby Hours, in situ in the Treasury, D. Marsh. Status: completed. Report filed 19:58: 'No change.'",
+        "mentions": [
+          "marsh",
+          "ashby_hours",
+          "treasury"
+        ],
+        "asserts": [
+          "at(marsh,treasury,thu_evening)"
+        ]
+      },
+      {
+        "id": "E12",
+        "title": "Case logger download",
+        "kind": "record",
+        "source": "environment_monitor",
+        "text": "Microclimate logger, Treasury display case, 5 to 10 March: one excursion in the whole period. Humidity and light rise from 19:41 to 19:53 on Thursday 6 March, the signature of the case standing open for twelve minutes. No excursion on Friday: the case was not opened that evening.",
+        "mentions": [
+          "case_logger",
+          "treasury"
+        ],
+        "asserts": [
+          "crime_at(treasury,thu_evening)"
+        ]
+      },
+      {
+        "id": "E13",
+        "title": "Lock examination",
+        "kind": "forensic",
+        "source": "treasury_scene",
+        "text": "Examination of the display case lock, on site: no pick, bump or bypass marks on the cylinder or bolt. It was opened with its own key. The maker's file shows a single key cut, K-12, and no duplicate ordered.",
+        "mentions": [
+          "ashby_hours",
+          "treasury",
+          "case_key"
+        ],
+        "asserts": [
+          "crime_used(case_key)"
+        ]
+      },
+      {
+        "id": "E14",
+        "title": "Comparison of the loan photograph",
+        "kind": "forensic",
+        "source": "conservation_lab",
+        "text": "Comparison of the loan photograph taken on Friday 7 March at 10:15 with the 2019 digitisation: the book photographed on Friday morning has the ruling pattern of the facsimile and lacks the old repair in the lower margin of folio 14. The original had left the case before Friday.",
+        "mentions": [
+          "loan_photograph",
+          "ashby_hours"
+        ],
+        "asserts": [
+          "crime_at(treasury,thu_evening)"
+        ],
+        "requires": [
+          "E01"
+        ]
+      },
+      {
+        "id": "E15",
+        "title": "Treasury door controller",
+        "kind": "record",
+        "source": "security_systems",
+        "text": "Treasury door controller. Thursday 6 March: staff fob D. Marsh in 19:36, out 19:57. Friday 7 March: staff fob A. Fenwick in 18:09, out 19:42. No other entries on either evening.",
+        "mentions": [
+          "treasury",
+          "marsh",
+          "fenwick"
+        ],
+        "asserts": [
+          "at(marsh,treasury,thu_evening)",
+          "at(fenwick,treasury,fri_evening)"
+        ]
+      },
+      {
+        "id": "E16",
+        "title": "Electronic key cabinet log",
+        "kind": "record",
+        "source": "security_systems",
+        "text": "Key cabinet, peg 12 (K-12). Released Thursday 18:04 to fob D. Marsh, returned 20:11. Released Friday 17:50 to fob A. Fenwick, returned Monday 08:19. The cabinet files its log by peg, not by person.",
+        "mentions": [
+          "case_key"
+        ],
+        "asserts": [
+          "had(marsh,case_key,thu_evening)",
+          "had(fenwick,case_key,fri_evening)"
+        ]
+      },
+      {
+        "id": "E17",
+        "title": "County court judgment",
+        "kind": "record",
+        "source": "public_records",
+        "text": "County court register: judgment against D. Marsh for 48,200 pounds, entered 12 January. Enforcement stayed until 31 March on the debtor's undertaking to pay in full.",
+        "mentions": [
+          "marsh"
+        ],
+        "asserts": [
+          "has_motive(marsh)"
+        ]
+      },
+      {
+        "id": "E18",
+        "title": "Payroll note",
+        "kind": "record",
+        "source": "hr_files",
+        "shareable": false,
+        "text": "Payroll file, D. Marsh: request of 24 February for an advance of three months' salary, 'urgent, personal'. Declined 26 February.",
+        "mentions": [
+          "marsh"
+        ],
+        "asserts": [
+          "has_motive(marsh)"
+        ]
+      },
+      {
+        "id": "E19",
+        "title": "Guildhall lecture recording",
+        "kind": "record",
+        "source": "public_records",
+        "text": "Guildhall lecture series, Thursday 6 March: published programme and the venue's recording show Dr. A. Fenwick speaking from 18:30 to 19:50 and taking questions until 20:15.",
+        "mentions": [
+          "fenwick",
+          "guildhall"
+        ],
+        "asserts": [
+          "at(fenwick,guildhall,thu_evening)"
+        ]
+      },
+      {
+        "id": "E20",
+        "title": "Great Hall camera",
+        "kind": "record",
+        "source": "security_systems",
+        "text": "Great Hall camera, Thursday 6 March, 19:25 to 20:05: Hugo Castellan is at the donors' table or at the cloakroom counter on the north stair landing throughout, never out of frame for more than four minutes. The registrar, L. Ibarra, is at the welcome desk for the whole period.",
+        "mentions": [
+          "castellan",
+          "ibarra",
+          "great_hall"
+        ],
+        "asserts": [
+          "at(castellan,great_hall,thu_evening)",
+          "at(ibarra,great_hall,thu_evening)"
+        ]
+      },
+      {
+        "id": "E21",
+        "title": "Unsigned letter",
+        "kind": "hearsay",
+        "speaker": "anonymous",
+        "source": "lodge_post",
+        "text": "Unsigned letter left at the lodge on Monday: 'Castellan has wanted the Hours for ten years. Ask him where it is.'",
+        "mentions": [
+          "ashby_hours",
+          "castellan"
+        ],
+        "asserts": [
+          "took(castellan,ashby_hours)"
+        ]
+      }
+    ],
+    "truth": {
+      "culprit": "marsh",
+      "solution": "Dana Marsh exchanged the book. She drew the case key for a scheduled condition check on Thursday evening, while the alarm panel was under maintenance and the building was at the reception, opened the case at 19:41 and put her own facsimile in its place. A court judgment she had undertaken to pay by the end of March was her reason. On Friday the curator, Fenwick, drew the same key to prepare the loan and sat beside the case all evening without opening it, which made him the obvious suspect once the night guard said the book had still been there at Friday closing. The guard had looked at the copy. Fenwick was lecturing across the city on Thursday, Castellan never left the reception, and the registrar was at the welcome desk.",
+      "facts": [
+        "took(marsh,ashby_hours)",
+        "crime_at(treasury,thu_evening)",
+        "crime_used(case_key)",
+        "had(marsh,case_key,thu_evening)",
+        "had(fenwick,case_key,fri_evening)",
+        "at(marsh,treasury,thu_evening)",
+        "at(fenwick,guildhall,thu_evening)",
+        "at(fenwick,treasury,fri_evening)",
+        "at(castellan,great_hall,thu_evening)",
+        "at(ibarra,great_hall,thu_evening)",
+        "has_motive(marsh)",
+        "has_motive(fenwick)",
+        "has_motive(castellan)"
+      ],
+      "key_evidence": [
+        "E07",
+        "E12",
+        "E13",
+        "E14",
+        "E15",
+        "E17"
+      ],
+      "key_facts": [
+        "crime_at(treasury,thu_evening)",
+        "crime_used(case_key)",
+        "had(marsh,case_key,thu_evening)",
+        "at(marsh,treasury,thu_evening)",
+        "has_motive(marsh)",
+        "at(fenwick,guildhall,thu_evening)",
+        "took(marsh,ashby_hours)"
+      ]
+    }
+  }
+}

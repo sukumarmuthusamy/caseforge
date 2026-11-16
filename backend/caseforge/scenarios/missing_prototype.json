@@ -1,0 +1,235 @@
+{
+  "public": {
+    "id": "missing_prototype",
+    "version": "1.1.0",
+    "case": {
+      "title": "The Missing Prototype",
+      "briefing": "The Aurora solid-state cell, Meridian Research's only working prototype, was verified in the Lab 3 vault at 17:00 on 14 October. At 07:30 the next morning the vault was empty. There are no signs of forced entry. The board votes on the programme's future in four days.",
+      "object": "aurora",
+      "crime_location": "lab3",
+      "suspects": ["brandt", "reyes", "voss", "mercer", "whitlock"],
+      "max_ticks": 40
+    },
+    "entities": [
+      {"id": "okafor", "kind": "person", "name": "Det. Mara Okafor", "description": "Lead investigator."},
+      {"id": "brandt", "kind": "person", "name": "Dr. Ilya Brandt", "description": "Principal researcher on Aurora."},
+      {"id": "reyes", "kind": "person", "name": "Jonah Reyes", "description": "Facilities and systems technician."},
+      {"id": "nair", "kind": "person", "name": "Priya Nair", "description": "Technology journalist covering Meridian."},
+      {"id": "voss", "kind": "person", "name": "Director Helen Voss", "description": "Director of the facility."},
+      {"id": "mercer", "kind": "person", "name": "Dale Mercer", "description": "HVAC contractor on site that night."},
+      {"id": "whitlock", "kind": "person", "name": "Sam Whitlock", "description": "Postdoctoral researcher on Brandt's team."},
+      {"id": "alvarez", "kind": "person", "name": "Rosa Alvarez", "description": "Night cleaner."},
+      {"id": "aurora", "kind": "object", "name": "Aurora prototype", "description": "Solid-state cell prototype, stored in the Lab 3 vault."},
+      {"id": "lab3", "kind": "location", "name": "Lab 3", "description": "Secure laboratory holding the vault.", "zone": "east_wing"},
+      {"id": "east_corridor", "kind": "location", "name": "East corridor", "description": "Corridor serving Lab 3.", "zone": "east_wing"},
+      {"id": "rooftop", "kind": "location", "name": "Rooftop plant", "description": "HVAC plant area.", "zone": "rooftop"},
+      {"id": "director_office", "kind": "location", "name": "Director's office", "description": "Admin wing, second floor.", "zone": "admin_wing"}
+    ],
+    "slots": [
+      {"id": "oct12_1715", "label": "12 Oct, 17:15-17:30"},
+      {"id": "oct14_2145", "label": "14 Oct, 21:45-22:00"}
+    ],
+    "agents": [
+      {
+        "id": "okafor",
+        "role": "detective",
+        "goals": ["Establish who took the prototype.", "Accuse only when means, motive and opportunity are all supported.", "Hear the accused before naming them."],
+        "disposition": {"can_accuse": true, "can_compel": true, "initiative": "full", "corrects_record": true, "disclosure": {"*": "closed"}}
+      },
+      {
+        "id": "brandt",
+        "role": "researcher",
+        "goals": ["Recover the prototype.", "Clear his own name if implicated."],
+        "disposition": {"initiative": "leads", "shares_with": ["okafor"], "disclosure": {"okafor": "open", "*": "self_only"}}
+      },
+      {
+        "id": "reyes",
+        "role": "technician",
+        "goals": ["Answer authorised record requests.", "Do not search colleagues' data without a request."],
+        "disposition": {"initiative": "reactive", "shares_with": ["okafor"], "disclosure": {"okafor": "open", "brandt": "self_only", "*": "closed"}}
+      },
+      {
+        "id": "nair",
+        "role": "journalist",
+        "goals": ["Break the story.", "Protect confidential sources.", "Retract what does not hold up."],
+        "disposition": {"hearsay_weight": 2, "can_publish": true, "publish_threshold": 3, "initiative": "full", "disclosure": {"*": "closed"}}
+      }
+    ],
+    "sources": [
+      {"id": "lab3_scene", "name": "Lab 3 scene", "description": "The laboratory and vault cabinet.", "kind": "physical", "operators": ["okafor", "brandt"], "searchable": ["aurora", "lab3"]},
+      {"id": "forensics_lab", "name": "Forensics lab", "description": "Hardware forensics on request of the investigator.", "kind": "forensic", "operators": ["okafor"], "searchable": ["lab3", "card0417"]},
+      {"id": "witness_alvarez", "name": "Interview: Rosa Alvarez", "description": "The night cleaner on duty.", "kind": "person", "operators": ["okafor", "nair"], "searchable": ["aurora"]},
+      {"id": "interview_whitlock", "name": "Interview: Sam Whitlock", "description": "Statement from the postdoc.", "kind": "person", "operators": ["okafor", "nair"], "searchable": ["whitlock"]},
+      {"id": "access_control", "name": "Door access logs", "description": "Card reader events for controlled doors.", "kind": "system", "operators": ["reyes"], "requesters": ["okafor", "brandt"], "searchable": ["aurora", "lab3", "card0417"]},
+      {"id": "badge_admin", "name": "Badge administration", "description": "Credential registry and encoder audit trail.", "kind": "system", "operators": ["reyes"], "requesters": ["okafor"], "searchable": ["card0417", "badge_desk"]},
+      {"id": "building_systems", "name": "Building systems", "description": "HVAC consoles, conferencing, Wi-Fi and VPN logs.", "kind": "system", "operators": ["reyes"], "requesters": ["okafor", "brandt"], "searchable": ["brandt", "reyes", "voss", "mercer", "whitlock"]},
+      {"id": "admin_records", "name": "Administrative records", "description": "Rosters and sign-in sheets.", "kind": "system", "operators": ["reyes", "brandt"], "requesters": ["okafor"], "searchable": ["badge_desk", "brandt", "reyes", "voss", "whitlock"]},
+      {"id": "mail_server", "name": "Mail server", "description": "Staff mailboxes. Searched only on the investigator's authority.", "kind": "system", "operators": ["reyes"], "self_serve": false, "requesters": ["okafor"], "searchable": ["brandt", "reyes", "voss", "whitlock"]},
+      {"id": "tip_line", "name": "Newsroom tip line", "description": "Anonymous tips to the journalist.", "kind": "external", "operators": ["nair"], "searchable": ["aurora"]},
+      {"id": "novacell_contact", "name": "Contact at Novacell", "description": "A confidential source at a competitor.", "kind": "external", "operators": ["nair"], "searchable": ["aurora", "whitlock"]},
+      {"id": "brandt_papers", "name": "Brandt's personal papers", "description": "Receipts and diary.", "kind": "person", "operators": ["brandt"], "searchable": ["brandt"]}
+    ],
+    "interventions": [
+      {"id": "leak_door_log", "label": "Leak the door log to the press", "description": "Someone hands the journalist a copy of the Lab 3 door access record.", "kind": "release_evidence", "evidence": "E01", "recipients": ["nair"]},
+      {"id": "rumor_contractor", "label": "Spread a rumor about the contractor", "description": "An anonymous message reaches everyone: the HVAC contractor walked out with a case.", "kind": "spread_rumor", "proposition": "took(mercer,aurora)", "text": "Anonymous message: 'It was the HVAC guy. He walked out with a case.'", "recipients": ["okafor", "brandt", "reyes", "nair"]},
+      {"id": "fast_track_forensics", "label": "Fast-track reader forensics", "description": "The forensics lab examines the Lab 3 card reader unprompted and sends the detective its report.", "kind": "release_evidence", "evidence": "E10", "recipients": ["okafor"]},
+      {"id": "grant_systems_access", "label": "Give the detective building-systems access", "description": "The detective may query building systems directly instead of asking the technician.", "kind": "grant_access", "agent": "okafor", "source": "building_systems"}
+    ]
+  },
+  "private": {
+    "hidden_entities": [
+      {"id": "card0417", "kind": "card", "name": "Keycard 0417", "description": "Access credential number 0417."},
+      {"id": "badge_desk", "kind": "location", "name": "Badge desk", "description": "Front-desk terminal where cards are encoded.", "zone": "admin_wing"},
+      {"id": "osteria", "kind": "location", "name": "Osteria Lumen", "description": "Restaurant 14 km from the facility.", "zone": "osteria"},
+      {"id": "whitlock_home", "kind": "location", "name": "Whitlock's flat", "description": "Across town.", "zone": "whitlock_home"},
+      {"id": "reyes_home", "kind": "location", "name": "Reyes's home", "description": "On-call from home.", "zone": "reyes_home"}
+    ],
+    "initial_holdings": {"brandt": ["E03"]},
+    "agendas": {
+      "reyes": {
+        "protects": "whitlock",
+        "deflects_to": "brandt",
+        "leaks_to": "nair",
+        "note": "Reyes owes Whitlock a favour and has agreed to keep him out of the records. He took no part in the theft and does not know what Whitlock did with the card. He acts on this only under the 'deceptive' policy."
+      }
+    },
+    "evidence": [
+      {
+        "id": "E01", "title": "Lab 3 door access record", "kind": "record", "source": "access_control",
+        "text": "Lab 3 door controller, 14 Oct: credential 0417 (registered holder Dr. I. Brandt) granted entry 21:47, exit 21:56. No other credential was presented at this door between 17:02 and 07:31.",
+        "mentions": ["aurora", "lab3", "card0417", "brandt"],
+        "asserts": ["card_used(card0417,lab3,oct14_2145)", "card_holder(card0417,brandt)", "crime_at(lab3,oct14_2145)"]
+      },
+      {
+        "id": "E02", "title": "Vault cabinet data logger", "kind": "record", "source": "lab3_scene",
+        "text": "The vault cabinet's internal logger shows the door opened at 21:50 and closed at 21:53 on 14 Oct. The cell-mass sensor reads zero from 21:51 onward.",
+        "mentions": ["aurora", "lab3"],
+        "asserts": ["crime_at(lab3,oct14_2145)"]
+      },
+      {
+        "id": "E03", "title": "Restaurant receipt and booking", "kind": "record", "source": "brandt_papers",
+        "text": "Card receipt and reservation record from Osteria Lumen, 14 km from the facility: table for two in the name Brandt seated 20:30, bill paid by chip and PIN at 22:05.",
+        "mentions": ["brandt", "osteria"],
+        "asserts": ["at(brandt,osteria,oct14_2145)"]
+      },
+      {
+        "id": "E04", "title": "Statement of the night cleaner", "kind": "testimony", "speaker": "alvarez", "source": "witness_alvarez",
+        "text": "Rosa Alvarez: 'About five to ten I saw someone in a grey hood carrying a hard case down the east corridor. I took it to be the HVAC contractor. He was the only stranger in the building that night.'",
+        "mentions": ["aurora", "mercer", "east_corridor", "alvarez"],
+        "asserts": ["at(mercer,east_corridor,oct14_2145)"]
+      },
+      {
+        "id": "E05", "title": "Rooftop unit service console log", "kind": "record", "source": "building_systems",
+        "text": "Rooftop unit 4 service console: manual calibration entries under contractor login dmercer every two to four minutes from 21:28 to 22:21. The panel door switch reads open throughout.",
+        "mentions": ["mercer", "rooftop"],
+        "asserts": ["at(mercer,rooftop,oct14_2145)"]
+      },
+      {
+        "id": "E06", "title": "Anonymous voicemail", "kind": "hearsay", "speaker": "anonymous", "source": "tip_line",
+        "text": "Anonymous voicemail on the newsroom tip line: 'Brandt sold the Aurora cell. Ask whose card opened the lab.'",
+        "mentions": ["aurora", "brandt"],
+        "asserts": ["took(brandt,aurora)"]
+      },
+      {
+        "id": "E07", "title": "Director's email to the board chair", "kind": "record", "source": "mail_server",
+        "text": "Email from Director Voss to the board chair, 9 Oct: 'If Aurora is not in the vault on audit day, the cancellation vote cannot proceed. Convenient, frankly.'",
+        "mentions": ["voss", "aurora"],
+        "asserts": ["has_motive(voss)"]
+      },
+      {
+        "id": "E08", "title": "Board call conferencing log", "kind": "record", "source": "building_systems",
+        "text": "Conferencing system: the room unit in the Director's office hosted the board call from 21:00 to 22:35. Presence sensor and camera active throughout; Voss is the active speaker at 21:44 and 21:52.",
+        "mentions": ["voss", "director_office"],
+        "asserts": ["at(voss,director_office,oct14_2145)"]
+      },
+      {
+        "id": "E09", "title": "Brandt's email to a former colleague", "kind": "record", "source": "mail_server",
+        "text": "Email from Dr. Brandt, 2 Oct: 'If the board kills Aurora I will take the design somewhere it is wanted.'",
+        "mentions": ["brandt", "aurora"],
+        "asserts": ["has_motive(brandt)"]
+      },
+      {
+        "id": "E10", "title": "Card reader forensic report", "kind": "forensic", "source": "forensics_lab",
+        "text": "Forensic dump of the Lab 3 reader: the card presented at 21:47 carried credential 0417 but chip serial C-7731. Dr. Brandt's issued card is serial A-1182. Serial C-7731 belongs to the blank stock held at the badge desk.",
+        "mentions": ["card0417", "lab3", "badge_desk"],
+        "asserts": ["card_cloned(card0417)"],
+        "requires": ["E01"]
+      },
+      {
+        "id": "E11", "title": "Badge encoder audit trail", "kind": "record", "source": "badge_admin",
+        "text": "Badge encoder audit trail: credential 0417 written to blank card C-7731 on 12 Oct at 17:21, at the badge desk terminal, under the shared 'frontdesk' login.",
+        "mentions": ["card0417", "badge_desk"],
+        "asserts": ["card_written(card0417,badge_desk,oct12_1715)"]
+      },
+      {
+        "id": "E12", "title": "Front desk cover roster", "kind": "record", "source": "admin_records",
+        "text": "Front desk cover roster, 12 Oct: 16:00 to 18:00, S. Whitlock covering reception and the badge desk. Signed in 15:58, signed out 18:03.",
+        "mentions": ["badge_desk", "whitlock"],
+        "asserts": ["at(whitlock,badge_desk,oct12_1715)"]
+      },
+      {
+        "id": "E13", "title": "Recruiter's email to Whitlock", "kind": "record", "source": "mail_server",
+        "text": "Email to S. Whitlock from a Novacell recruiter, 11 Oct: 'The offer stands. As discussed, it is contingent on the sample reaching us by Friday.'",
+        "mentions": ["whitlock", "aurora"],
+        "asserts": ["has_motive(whitlock)"]
+      },
+      {
+        "id": "E14", "title": "Off-the-record remark from Novacell", "kind": "hearsay", "speaker": "novacell_contact", "source": "novacell_contact", "shareable": false,
+        "text": "A contact at Novacell, off the record: 'We are expecting a Meridian cell sample this week. Our recruiter has been courting the postdoc on Brandt's team.'",
+        "mentions": ["aurora", "whitlock"],
+        "asserts": ["has_motive(whitlock)"]
+      },
+      {
+        "id": "E15", "title": "Wi-Fi association log", "kind": "record", "source": "building_systems",
+        "text": "Wi-Fi controller: the phone registered to S. Whitlock was associated with the east corridor access point from 21:43 to 21:57 on 14 Oct.",
+        "mentions": ["whitlock", "east_corridor"],
+        "asserts": ["at(whitlock,east_corridor,oct14_2145)"]
+      },
+      {
+        "id": "E16", "title": "Whitlock's statement", "kind": "testimony", "speaker": "whitlock", "source": "interview_whitlock",
+        "text": "Sam Whitlock: 'I left at quarter past eight and was home by nine. I was nowhere near the lab.'",
+        "mentions": ["whitlock", "whitlock_home"],
+        "asserts": ["at(whitlock,whitlock_home,oct14_2145)"]
+      },
+      {
+        "id": "E17", "title": "VPN session log", "kind": "record", "source": "building_systems",
+        "text": "VPN concentrator: user jreyes connected from a residential address from 21:22 to 22:14, with interactive alarm acknowledgements at 21:31 and 21:49.",
+        "mentions": ["reyes", "reyes_home"],
+        "asserts": ["at(reyes,reyes_home,oct14_2145)"]
+      }
+    ],
+    "truth": {
+      "culprit": "whitlock",
+      "solution": "Sam Whitlock took the prototype. While covering the badge desk on 12 October he wrote Brandt's credential 0417 onto a blank card. On 14 October he badged out at 20:15, came back, entered Lab 3 with the cloned card at 21:47, emptied the vault at 21:50 and left through the east corridor, where the cleaner mistook him for the contractor. A competitor's job offer depended on him delivering a sample. Brandt was at dinner, Mercer was on the roof, Voss was on a board call and Reyes was at home on call.",
+      "facts": [
+        "took(whitlock,aurora)",
+        "crime_at(lab3,oct14_2145)",
+        "card_used(card0417,lab3,oct14_2145)",
+        "card_holder(card0417,brandt)",
+        "card_cloned(card0417)",
+        "card_written(card0417,badge_desk,oct12_1715)",
+        "could_use(whitlock,card0417)",
+        "at(whitlock,badge_desk,oct12_1715)",
+        "at(whitlock,lab3,oct14_2145)",
+        "at(whitlock,east_corridor,oct14_2145)",
+        "at(brandt,osteria,oct14_2145)",
+        "at(mercer,rooftop,oct14_2145)",
+        "at(voss,director_office,oct14_2145)",
+        "at(reyes,reyes_home,oct14_2145)",
+        "has_motive(whitlock)",
+        "has_motive(voss)",
+        "has_motive(brandt)"
+      ],
+      "key_evidence": ["E01", "E10", "E11", "E12", "E13", "E15"],
+      "key_facts": [
+        "crime_at(lab3,oct14_2145)",
+        "card_cloned(card0417)",
+        "could_use(whitlock,card0417)",
+        "at(whitlock,east_corridor,oct14_2145)",
+        "has_motive(whitlock)",
+        "at(brandt,osteria,oct14_2145)",
+        "took(whitlock,aurora)"
+      ]
+    }
+  }
+}

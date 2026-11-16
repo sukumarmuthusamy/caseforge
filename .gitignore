@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+build/
+
+# Node
+node_modules/
+frontend/dist/
+*.tsbuildinfo
+
+# Local data and secrets
+*.sqlite3
+*.sqlite3-journal
+*.sqlite3-wal
+*.sqlite3-shm
+.env
+.env.*
+!.env.example
+
+# Editor settings
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Browser test output
+frontend/test-results/
+frontend/playwright-report/

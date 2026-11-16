@@ -1,0 +1,1967 @@
+{
+  "manifest_version": 1,
+  "title": "CaseForge counterfactual laboratory, collection 1",
+  "label": "Internally pre-registered challenges, written by the author of the rules. Not an independent benchmark.",
+  "protocol": [
+    "The rule set, engine version, base scenarios and a fingerprint of the reasoner and policy sources are recorded under `frozen`.",
+    "Every variant was built and passed through the ordinary scenario lint before registration. The lint uses the reasoner to decide solvability, so the author knew each variant to be solvable in principle (or solvable only by escalation, where stated).",
+    "Expectations and predictions were committed in the project's development history before any challenge other than `control` was run; `control` was used to develop the runner. That history is not part of the public repository, so the order cannot be verified from it.",
+    "No rule or policy is changed in response to a result. A challenge found defective after running is reported as such and amended only as a new revision, with the reason.",
+    "Revision for publication (2026-11-16), wording only: the question of `one_voice_two_doors` no longer cites an internal review identifier, `frozen` no longer names a commit of the unpublished development history, and the third item of this protocol says where the order of registration was recorded. No variant, edit, expectation, prediction, policy, rule or seed changed. The whole collection was then run again under the same frozen baseline; docs/LAB.md compares that run with the first."
+  ],
+  "frozen": {
+    "engine_version": "3",
+    "rules_version": "2026.11-voices",
+    "behaviour_fingerprint": "176b7461d5339758",
+    "scenarios": {
+      "quiet_substitution": {
+        "version": "1.1.0",
+        "hash": "3f203e24f527"
+      }
+    }
+  },
+  "categories": {
+    "control": "The bundled case unchanged.",
+    "innocent_custodian": "Somebody who lawfully had the means, and is innocent.",
+    "surviving_lie": "False testimony that no evidence available to the team can refute.",
+    "mistaken_testimony": "Honest testimony that is wrong, or right and discounted.",
+    "route_variation": "The same facts reachable only by a different path.",
+    "provenance_conflict": "Contradictory evidence of different kinds and origins.",
+    "role_permutation": "A different culprit, with the evidence rewritten to stay consistent."
+  },
+  "variants": {
+    "control": {
+      "base": "quiet_substitution",
+      "revision": 1,
+      "summary": "The Quiet Substitution exactly as bundled. It shows that the laboratory reproduces the documented sweep and adds nothing of its own.",
+      "ops": []
+    },
+    "custodian": {
+      "base": "quiet_substitution",
+      "revision": 1,
+      "summary": "The registrar, who is innocent, also held the case key on Thursday, has a recorded reason to want the book gone, and was mistakenly seen on the Treasury landing. The camera that clears her is with security.",
+      "ops": [
+        {
+          "op": "evidence.add",
+          "why": "lawful custody: the registrar signs the key out of the safe before issuing it",
+          "record": {
+            "id": "E22",
+            "title": "Key register, Thursday, registrar's entry",
+            "kind": "record",
+            "speaker": null,
+            "source": "key_register",
+            "mentions": [
+              "case_key",
+              "ibarra"
+            ],
+            "asserts": [
+              {
+                "predicate": "had",
+                "args": [
+                  "ibarra",
+                  "case_key",
+                  "thu_evening"
+                ]
+              }
+            ],
+            "requires": [],
+            "shareable": true,
+            "text": "Key register, Thursday 6 March: K-12 drawn from the registrar's safe 17:52, L. Ibarra, 'to issue for condition check'. Issued to D. Marsh 18:04."
+          }
+        },
+        {
+          "op": "evidence.add",
+          "why": "an ordinary motive for an innocent person",
+          "record": {
+            "id": "E23",
+            "title": "Minutes of the acquisitions committee",
+            "kind": "record",
+            "speaker": null,
+            "source": "public_records",
+            "mentions": [
+              "ibarra",
+              "ashby_hours"
+            ],
+            "asserts": [
+              {
+                "predicate": "has_motive",
+                "args": [
+                  "ibarra"
+                ]
+              }
+            ],
+            "requires": [],
+            "shareable": true,
+            "text": "Acquisitions committee, published minutes, February: the registrar, L. Ibarra, is formally censured over the lapsed insurance valuation of the Ashby Hours and warned that the post will be reviewed if the loan does not proceed."
+          }
+        },
+        {
+          "op": "evidence.add",
+          "why": "an honest witness who is wrong: the steward mistook a colleague for the registrar",
+          "record": {
+            "id": "E24",
+            "title": "Second steward's sighting",
+            "kind": "testimony",
+            "speaker": "alder",
+            "source": "reception_staff",
+            "mentions": [
+              "ibarra",
+              "treasury_lobby",
+              "alder"
+            ],
+            "asserts": [
+              {
+                "predicate": "at",
+                "args": [
+                  "ibarra",
+                  "treasury_lobby",
+                  "thu_evening"
+                ]
+              }
+            ],
+            "requires": [],
+            "shareable": true,
+            "text": "Imogen Alder, steward: 'And a little after that the registrar went up the same stair with a key folder under her arm. I am fairly sure it was her.'"
+          }
+        },
+        {
+          "op": "source.set",
+          "id": "reception_staff",
+          "why": "the stewards can be asked about the registrar",
+          "fields": {
+            "searchable": [
+              "castellan",
+              "ibarra"
+            ]
+          }
+        },
+        {
+          "op": "truth.facts",
+          "why": "the added records are true; the sighting is not",
+          "add": [
+            {
+              "predicate": "had",
+              "args": [
+                "ibarra",
+                "case_key",
+                "thu_evening"
+              ]
+            },
+            {
+              "predicate": "has_motive",
+              "args": [
+                "ibarra"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "witness_only": {
+      "base": "quiet_substitution",
+      "revision": 1,
+      "summary": "No record places the conservator in the Treasury on Thursday. Her presence rests on her own statement and on a steward who saw her go up, and that steward is wrong about somebody else.",
+      "ops": [
+        {
+          "op": "evidence.remove",
+          "id": "E11",
+          "why": "no condition-check schedule: one hard route to the culprit's presence is gone"
+        },
+        {
+          "op": "evidence.set",
+          "id": "E15",
+          "why": "the door controller was in maintenance mode on Thursday and logged nothing; the other hard route is gone",
+          "fields": {
+            "mentions": [
+              "treasury",
+              "fenwick"
+            ],
+            "asserts": [
+              {
+                "predicate": "at",
+                "args": [
+                  "fenwick",
+                  "treasury",
+                  "fri_evening"
+                ]
+              }
+            ],
+            "text": "Treasury door controller. Thursday 6 March: controller in maintenance mode with the alarm panel, no entries logged. Friday 7 March: staff fob A. Fenwick in 18:09, out 19:42."
+          }
+        },
+        {
+          "op": "evidence.add",
+          "why": "the same steward, this time right: she saw the conservator go up",
+          "record": {
+            "id": "E22",
+            "title": "Steward on the conservator",
+            "kind": "testimony",
+            "speaker": "alder",
+            "source": "reception_staff",
+            "mentions": [
+              "marsh",
+              "treasury_lobby",
+              "alder"
+            ],
+            "asserts": [
+              {
+                "predicate": "at",
+                "args": [
+                  "marsh",
+                  "treasury_lobby",
+                  "thu_evening"
+                ]
+              }
+            ],
+            "requires": [],
+            "shareable": true,
+            "text": "Imogen Alder, steward: 'The conservator went up the north stair at about half past seven with her kit. I held the door for her. She was up there a good twenty minutes.'"
+          }
+        },
+        {
+          "op": "source.set",
+          "id": "reception_staff",
+          "why": "the stewards can be asked about the conservator",
+          "fields": {
+            "searchable": [
+              "castellan",
+              "marsh"
+            ]
+          }
+        },
+        {
+          "op": "truth.facts",
+          "why": "what the steward saw is true: the landing is in the Treasury wing",
+          "add": [
+            {
+              "predicate": "at",
+              "args": [
+                "marsh",
+                "treasury_lobby",
+                "thu_evening"
+              ]
+            }
+          ]
+        },
+        {
+          "op": "truth.set",
+          "why": "the records that carry the case have changed",
+          "fields": {
+            "key_evidence": [
+              "E05",
+              "E07",
+              "E12",
+              "E13",
+              "E14",
+              "E17",
+              "E22"
+            ]
+          }
+        }
+      ]
+    },
+    "second_routes": {
+      "base": "quiet_substitution",
+      "revision": 1,
+      "summary": "The first record on each leg is gone: no logger download, no Thursday page in the key register, no Thursday entry on the door controller. Each leg can still be reached by a second, slower route.",
+      "ops": [
+        {
+          "op": "intervention.remove",
+          "id": "release_logger",
+          "why": "it releases the record removed next"
+        },
+        {
+          "op": "evidence.remove",
+          "id": "E12",
+          "why": "time of the exchange now rests on the laboratory comparison (E14), which needs the loan file first"
+        },
+        {
+          "op": "evidence.remove",
+          "id": "E07",
+          "why": "custody now rests on the electronic key cabinet (E16), held by security"
+        },
+        {
+          "op": "evidence.set",
+          "id": "E15",
+          "why": "presence now rests on the condition-check schedule (E11)",
+          "fields": {
+            "mentions": [
+              "treasury",
+              "fenwick"
+            ],
+            "asserts": [
+              {
+                "predicate": "at",
+                "args": [
+                  "fenwick",
+                  "treasury",
+                  "fri_evening"
+                ]
+              }
+            ],
+            "text": "Treasury door controller. Thursday 6 March: controller in maintenance mode with the alarm panel, no entries logged. Friday 7 March: staff fob A. Fenwick in 18:09, out 19:42."
+          }
+        },
+        {
+          "op": "truth.set",
+          "why": "the records that carry the case have changed",
+          "fields": {
+            "key_evidence": [
+              "E11",
+              "E13",
+              "E14",
+              "E16",
+              "E17"
+            ]
+          }
+        }
+      ]
+    },
+    "sealed_motive": {
+      "base": "quiet_substitution",
+      "revision": 1,
+      "summary": "The court judgment is not public. The conservator's motive exists only in the confidential personnel file, which the registrar keeps.",
+      "ops": [
+        {
+          "op": "evidence.remove",
+          "id": "E17",
+          "why": "the public route to the motive is gone; E18 in the personnel files is the only one"
+        },
+        {
+          "op": "truth.set",
+          "why": "the records that carry the case have changed",
+          "fields": {
+            "key_evidence": [
+              "E07",
+              "E12",
+              "E13",
+              "E14",
+              "E15",
+              "E18"
+            ]
+          }
+        }
+      ]
+    },
+    "more_witnesses": {
+      "base": "quiet_substitution",
+      "revision": 1,
+      "summary": "Two more honest people remember the book in its case on Friday. Recollection now outweighs either instrument alone; only both instruments together outweigh it.",
+      "ops": [
+        {
+          "op": "entity.add",
+          "hidden": true,
+          "why": "a second witness for Friday",
+          "entity": {
+            "id": "okoro",
+            "kind": "person",
+            "name": "Ada Okoro",
+            "description": "Gallery attendant, on duty on Friday.",
+            "zone": null
+          }
+        },
+        {
+          "op": "entity.add",
+          "hidden": true,
+          "why": "a third witness for Friday",
+          "entity": {
+            "id": "brandt",
+            "kind": "person",
+            "name": "Felix Brandt",
+            "description": "Cleaner, in the Treasury on Friday evening.",
+            "zone": null
+          }
+        },
+        {
+          "op": "evidence.add",
+          "why": "honest and mistaken: she looked at the facsimile",
+          "record": {
+            "id": "E22",
+            "title": "Gallery attendant on Friday",
+            "kind": "testimony",
+            "speaker": "okoro",
+            "source": "interview_pruitt",
+            "mentions": [
+              "ashby_hours",
+              "treasury",
+              "okoro"
+            ],
+            "asserts": [
+              {
+                "predicate": "crime_at",
+                "args": [
+                  "treasury",
+                  "fri_evening"
+                ]
+              }
+            ],
+            "requires": [],
+            "shareable": true,
+            "text": "Ada Okoro, gallery attendant: 'I dusted that case at four on Friday. The book was there, I would have noticed. It went after I left.'"
+          }
+        },
+        {
+          "op": "evidence.add",
+          "why": "honest and mistaken: so did he",
+          "record": {
+            "id": "E23",
+            "title": "Cleaner on Friday",
+            "kind": "testimony",
+            "speaker": "brandt",
+            "source": "interview_pruitt",
+            "mentions": [
+              "ashby_hours",
+              "treasury",
+              "brandt"
+            ],
+            "asserts": [
+              {
+                "predicate": "crime_at",
+                "args": [
+                  "treasury",
+                  "fri_evening"
+                ]
+              }
+            ],
+            "requires": [],
+            "shareable": true,
+            "text": "Felix Brandt, cleaner: 'I did the Treasury floor just before six on Friday. The old book was in the case with the light on it, same as ever.'"
+          }
+        }
+      ]
+    },
+    "curator_did_it": {
+      "base": "quiet_substitution",
+      "revision": 1,
+      "summary": "The same building, people and sources, with the roles exchanged: the curator took the book on Friday. The two instruments that date the exchange now say Friday, the curator's own account becomes the false one and the night guard's the true one.",
+      "ops": [
+        {
+          "op": "truth.facts",
+          "why": "who and when",
+          "remove": [
+            {
+              "predicate": "took",
+              "args": [
+                "marsh",
+                "ashby_hours"
+              ]
+            },
+            {
+              "predicate": "crime_at",
+              "args": [
+                "treasury",
+                "thu_evening"
+              ]
+            }
+          ],
+          "add": [
+            {
+              "predicate": "took",
+              "args": [
+                "fenwick",
+                "ashby_hours"
+              ]
+            },
+            {
+              "predicate": "crime_at",
+              "args": [
+                "treasury",
+                "fri_evening"
+              ]
+            }
+          ]
+        },
+        {
+          "op": "truth.set",
+          "why": "culprit, account, and the records and facts that carry the case",
+          "fields": {
+            "culprit": "fenwick",
+            "solution": "Alan Fenwick exchanged the book. He drew the case key on Friday evening to prepare the loan, was alone in the Treasury from 18:09 to 19:42 with the alarm off, opened the case at 18:31 and left a facsimile in it. The sale he had proposed and the board had refused was his reason. The conservator's condition check on Thursday was what it claimed to be: she had the book out for twelve minutes and put it back. Fenwick's account, that the book was already a copy when he sat down beside it, is false.",
+            "key_evidence": [
+              "E08",
+              "E09",
+              "E12",
+              "E13",
+              "E14",
+              "E15"
+            ],
+            "key_facts": [
+              {
+                "predicate": "crime_at",
+                "args": [
+                  "treasury",
+                  "fri_evening"
+                ]
+              },
+              {
+                "predicate": "crime_used",
+                "args": [
+                  "case_key"
+                ]
+              },
+              {
+                "predicate": "had",
+                "args": [
+                  "fenwick",
+                  "case_key",
+                  "fri_evening"
+                ]
+              },
+              {
+                "predicate": "at",
+                "args": [
+                  "fenwick",
+                  "treasury",
+                  "fri_evening"
+                ]
+              },
+              {
+                "predicate": "has_motive",
+                "args": [
+                  "fenwick"
+                ]
+              },
+              {
+                "predicate": "took",
+                "args": [
+                  "fenwick",
+                  "ashby_hours"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "op": "evidence.set",
+          "id": "E12",
+          "why": "the logger must agree with the new truth: Thursday shows only the scheduled twelve-minute check, Friday the long unscheduled opening",
+          "fields": {
+            "asserts": [
+              {
+                "predicate": "crime_at",
+                "args": [
+                  "treasury",
+                  "fri_evening"
+                ]
+              }
+            ],
+            "text": "Microclimate logger, Treasury display case, 5 to 10 March. Thursday 6 March, 19:41 to 19:53: a twelve-minute excursion, matching the scheduled condition check. Friday 7 March, 18:31 to 19:38: the case stands open for sixty-seven minutes, with two changes of load on the cradle sensor. Nothing was scheduled. The book was exchanged on Friday evening."
+          }
+        },
+        {
+          "op": "evidence.set",
+          "id": "E14",
+          "why": "the photograph must agree with the new truth: the original was still there on Friday morning",
+          "fields": {
+            "asserts": [
+              {
+                "predicate": "crime_at",
+                "args": [
+                  "treasury",
+                  "fri_evening"
+                ]
+              }
+            ],
+            "text": "Comparison of the loan photograph taken on Friday 7 March at 10:15 with the 2019 digitisation: the book photographed on Friday morning is the original, with the old repair in the lower margin of folio 14. The facsimile has no such repair. The original was still in the case on Friday morning, after Thursday's condition check."
+          }
+        }
+      ]
+    }
+  },
+  "challenges": [
+    {
+      "id": "control",
+      "kind": "playable",
+      "variant": "control",
+      "category": "control",
+      "culprit": "marsh",
+      "policies": {},
+      "question": "Does the laboratory, given the bundled case unchanged, report what the documented sweep reports (40 solved, median 19 ticks)?",
+      "prediction": "40 of 40 correct and supported, as in README; this is a check of the runner, not of the rules.",
+      "expectations": [
+        {
+          "id": "stated_culprit",
+          "kind": "design",
+          "check": "culprit_is",
+          "predicted": "holds",
+          "says": "the scenario's culprit is marsh",
+          "args": {
+            "person": "marsh"
+          }
+        },
+        {
+          "id": "replay",
+          "kind": "contract",
+          "check": "replay_verifies",
+          "predicted": "holds",
+          "says": "the run replays to the same head hash at all four levels"
+        },
+        {
+          "id": "no_rejected_action",
+          "kind": "contract",
+          "check": "no_rejected_actions",
+          "predicted": "holds",
+          "says": "no deterministic policy proposes an action the engine rejects"
+        },
+        {
+          "id": "solved_with_support",
+          "kind": "ideal",
+          "check": "category_in",
+          "predicted": "holds",
+          "says": "the culprit is accused and the standard of proof is met",
+          "args": {
+            "among": [
+              "correct_supported"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "custodian",
+      "kind": "playable",
+      "variant": "custodian",
+      "category": "innocent_custodian",
+      "culprit": "marsh",
+      "policies": {},
+      "question": "An innocent registrar has the key, a motive and a mistaken sighting against her, and the camera that clears her is held by somebody else. Does a careful team still name the conservator, and never the registrar?",
+      "prediction": "The inspector hears the accused and checks their story before accusing, and the camera record refutes the steward. Expected: solved in all 40, the registrar never accused, somewhat later than the control.",
+      "expectations": [
+        {
+          "id": "stated_culprit",
+          "kind": "design",
+          "check": "culprit_is",
+          "predicted": "holds",
+          "says": "the scenario's culprit is marsh",
+          "args": {
+            "person": "marsh"
+          }
+        },
+        {
+          "id": "replay",
+          "kind": "contract",
+          "check": "replay_verifies",
+          "predicted": "holds",
+          "says": "the run replays to the same head hash at all four levels"
+        },
+        {
+          "id": "no_rejected_action",
+          "kind": "contract",
+          "check": "no_rejected_actions",
+          "predicted": "holds",
+          "says": "no deterministic policy proposes an action the engine rejects"
+        },
+        {
+          "id": "registrar_not_accused",
+          "kind": "ideal",
+          "check": "accused_not_in",
+          "predicted": "holds",
+          "says": "the innocent custodian is not accused",
+          "args": {
+            "people": [
+              "ibarra"
+            ]
+          }
+        },
+        {
+          "id": "solved_with_support",
+          "kind": "ideal",
+          "check": "category_in",
+          "predicted": "holds",
+          "says": "the culprit is accused and the standard of proof is met",
+          "args": {
+            "among": [
+              "correct_supported"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "custodian_hasty",
+      "kind": "playable",
+      "variant": "custodian",
+      "category": "innocent_custodian",
+      "culprit": "marsh",
+      "policies": {
+        "hale": "hasty"
+      },
+      "question": "The same case with an inspector who accuses as soon as the standard is met on what she holds. Before the camera record arrives the registrar can look complete: key, motive and a sighting.",
+      "prediction": "Some runs accuse the registrar with the standard met on the inspector's holdings (wrong and supported); the rest split between the conservator and the curator as in the documented hasty sweep. Expected: mixed, with at least one accusation of the registrar.",
+      "expectations": [
+        {
+          "id": "stated_culprit",
+          "kind": "design",
+          "check": "culprit_is",
+          "predicted": "holds",
+          "says": "the scenario's culprit is marsh",
+          "args": {
+            "person": "marsh"
+          }
+        },
+        {
+          "id": "replay",
+          "kind": "contract",
+          "check": "replay_verifies",
+          "predicted": "holds",
+          "says": "the run replays to the same head hash at all four levels"
+        },
+        {
+          "id": "no_rejected_action",
+          "kind": "contract",
+          "check": "no_rejected_actions",
+          "predicted": "holds",
+          "says": "no deterministic policy proposes an action the engine rejects"
+        },
+        {
+          "id": "registrar_not_accused",
+          "kind": "ideal",
+          "check": "accused_not_in",
+          "predicted": "mixed",
+          "says": "the innocent custodian is not accused",
+          "args": {
+            "people": [
+              "ibarra"
+            ]
+          }
+        },
+        {
+          "id": "solved_with_support",
+          "kind": "ideal",
+          "check": "category_in",
+          "predicted": "mixed",
+          "says": "the culprit is accused and the standard of proof is met",
+          "args": {
+            "among": [
+              "correct_supported"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "mistaken_witness",
+      "kind": "playable",
+      "variant": "witness_only",
+      "category": "mistaken_testimony",
+      "culprit": "marsh",
+      "policies": {},
+      "question": "The only independent word for the conservator's presence comes from a steward who is honestly wrong about the dealer. Once the camera shows that, her true sighting is discounted. Is the case still made?",
+      "prediction": "The steward is caught out and her sighting falls to weight 1; with the conservator's own statement (weight 1) presence still reaches 2, exactly the threshold. Expected: solved in all 40, with no margin to spare.",
+      "expectations": [
+        {
+          "id": "stated_culprit",
+          "kind": "design",
+          "check": "culprit_is",
+          "predicted": "holds",
+          "says": "the scenario's culprit is marsh",
+          "args": {
+            "person": "marsh"
+          }
+        },
+        {
+          "id": "replay",
+          "kind": "contract",
+          "check": "replay_verifies",
+          "predicted": "holds",
+          "says": "the run replays to the same head hash at all four levels"
+        },
+        {
+          "id": "no_rejected_action",
+          "kind": "contract",
+          "check": "no_rejected_actions",
+          "predicted": "holds",
+          "says": "no deterministic policy proposes an action the engine rejects"
+        },
+        {
+          "id": "steward_doubted",
+          "kind": "design",
+          "check": "voice_standing",
+          "predicted": "holds",
+          "says": "at the close the inspector has caught the steward out",
+          "args": {
+            "agent": "hale",
+            "voice": "alder",
+            "standing": "impeached"
+          }
+        },
+        {
+          "id": "solved_with_support",
+          "kind": "ideal",
+          "check": "category_in",
+          "predicted": "holds",
+          "says": "the culprit is accused and the standard of proof is met",
+          "args": {
+            "among": [
+              "correct_supported"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "lie_survives",
+      "kind": "playable",
+      "variant": "witness_only",
+      "category": "surviving_lie",
+      "culprit": "marsh",
+      "policies": {
+        "ibarra": "deceptive"
+      },
+      "question": "The registrar tells colleagues the conservator was at the reception. In this variant no record anywhere says otherwise, so the lie can never be refuted. What does the team do with a false alibi it cannot check?",
+      "prediction": "The lie is never rejected. It weighs 2 against at most 3 for the truth, so the conservator's opportunity stays contested and nobody is accused: unresolved in all 40. The inspector takes over the registrar's sources after noticing the withholding, and that does not help, because being caught withholding is not evidence against what she said.",
+      "expectations": [
+        {
+          "id": "stated_culprit",
+          "kind": "design",
+          "check": "culprit_is",
+          "predicted": "holds",
+          "says": "the scenario's culprit is marsh",
+          "args": {
+            "person": "marsh"
+          }
+        },
+        {
+          "id": "replay",
+          "kind": "contract",
+          "check": "replay_verifies",
+          "predicted": "holds",
+          "says": "the run replays to the same head hash at all four levels"
+        },
+        {
+          "id": "no_rejected_action",
+          "kind": "contract",
+          "check": "no_rejected_actions",
+          "predicted": "holds",
+          "says": "no deterministic policy proposes an action the engine rejects"
+        },
+        {
+          "id": "lie_told",
+          "kind": "design",
+          "check": "false_statements_made",
+          "predicted": "holds",
+          "says": "at least one false statement is made",
+          "args": {
+            "at_least": 1
+          }
+        },
+        {
+          "id": "lie_not_refuted",
+          "kind": "design",
+          "check": "false_statement_unrefuted_at_close",
+          "predicted": "holds",
+          "says": "at the close some false statement has not been rejected by its listener"
+        },
+        {
+          "id": "one_voice_one_vote",
+          "kind": "contract",
+          "check": "belief_support_at_most",
+          "predicted": "holds",
+          "says": "however often the alibi is repeated or passed on, it never weighs more than one person's word with the inspector",
+          "args": {
+            "agent": "hale",
+            "proposition": "at(marsh,great_hall,thu_evening)",
+            "most": 2
+          }
+        },
+        {
+          "id": "nobody_innocent_accused",
+          "kind": "ideal",
+          "check": "accused_not_in",
+          "predicted": "holds",
+          "says": "no innocent person is accused",
+          "args": {
+            "people": [
+              "fenwick",
+              "castellan",
+              "ibarra"
+            ]
+          }
+        },
+        {
+          "id": "lie_not_accepted",
+          "kind": "ideal",
+          "check": "no_false_statement_accepted_at_close",
+          "predicted": "mixed",
+          "says": "no listener still accepts a false statement at the close"
+        },
+        {
+          "id": "solved_with_support",
+          "kind": "ideal",
+          "check": "category_in",
+          "predicted": "fails",
+          "says": "the culprit is accused and the standard of proof is met",
+          "args": {
+            "among": [
+              "correct_supported"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "second_routes",
+      "kind": "playable",
+      "variant": "second_routes",
+      "category": "route_variation",
+      "culprit": "marsh",
+      "policies": {},
+      "question": "Each leg of the case has lost its most direct record. Does the team find the second route to time, custody and presence?",
+      "prediction": "Solved in all 40, later than the control, because the time now needs the loan file and then the laboratory.",
+      "expectations": [
+        {
+          "id": "stated_culprit",
+          "kind": "design",
+          "check": "culprit_is",
+          "predicted": "holds",
+          "says": "the scenario's culprit is marsh",
+          "args": {
+            "person": "marsh"
+          }
+        },
+        {
+          "id": "replay",
+          "kind": "contract",
+          "check": "replay_verifies",
+          "predicted": "holds",
+          "says": "the run replays to the same head hash at all four levels"
+        },
+        {
+          "id": "no_rejected_action",
+          "kind": "contract",
+          "check": "no_rejected_actions",
+          "predicted": "holds",
+          "says": "no deterministic policy proposes an action the engine rejects"
+        },
+        {
+          "id": "solved_with_support",
+          "kind": "ideal",
+          "check": "category_in",
+          "predicted": "holds",
+          "says": "the culprit is accused and the standard of proof is met",
+          "args": {
+            "among": [
+              "correct_supported"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "sealed_motive",
+      "kind": "playable",
+      "variant": "sealed_motive",
+      "category": "route_variation",
+      "culprit": "marsh",
+      "policies": {},
+      "question": "The motive is only in the confidential personnel file. With an honest registrar, does the inspector ever get to it?",
+      "prediction": "The lint calls this variant solvable only by escalation: the personnel file is not self-serve and an honest registrar gives no grounds to take it over. Expected: unresolved in all 40, and nobody wrongly accused.",
+      "expectations": [
+        {
+          "id": "stated_culprit",
+          "kind": "design",
+          "check": "culprit_is",
+          "predicted": "holds",
+          "says": "the scenario's culprit is marsh",
+          "args": {
+            "person": "marsh"
+          }
+        },
+        {
+          "id": "replay",
+          "kind": "contract",
+          "check": "replay_verifies",
+          "predicted": "holds",
+          "says": "the run replays to the same head hash at all four levels"
+        },
+        {
+          "id": "no_rejected_action",
+          "kind": "contract",
+          "check": "no_rejected_actions",
+          "predicted": "holds",
+          "says": "no deterministic policy proposes an action the engine rejects"
+        },
+        {
+          "id": "no_takeover",
+          "kind": "design",
+          "check": "escalated",
+          "predicted": "holds",
+          "says": "the inspector does not take over anybody's sources",
+          "args": {
+            "expected": false
+          }
+        },
+        {
+          "id": "nobody_innocent_accused",
+          "kind": "ideal",
+          "check": "accused_not_in",
+          "predicted": "holds",
+          "says": "no innocent person is accused",
+          "args": {
+            "people": [
+              "fenwick",
+              "castellan",
+              "ibarra"
+            ]
+          }
+        },
+        {
+          "id": "solved_with_support",
+          "kind": "ideal",
+          "check": "category_in",
+          "predicted": "fails",
+          "says": "the culprit is accused and the standard of proof is met",
+          "args": {
+            "among": [
+              "correct_supported"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "sealed_motive_deceptive",
+      "kind": "playable",
+      "variant": "sealed_motive",
+      "category": "route_variation",
+      "culprit": "marsh",
+      "policies": {
+        "ibarra": "deceptive"
+      },
+      "question": "The same case with a registrar who withholds. Being caught gives the inspector grounds to take over the registrar's sources, the personnel file among them. Does obstruction open the only route to the motive?",
+      "prediction": "In the runs where the withholding is noticed the inspector takes over, reads the file and solves the case; where it is not, the case stays open. Expected: mixed, with more solved than under the honest registrar.",
+      "expectations": [
+        {
+          "id": "stated_culprit",
+          "kind": "design",
+          "check": "culprit_is",
+          "predicted": "holds",
+          "says": "the scenario's culprit is marsh",
+          "args": {
+            "person": "marsh"
+          }
+        },
+        {
+          "id": "replay",
+          "kind": "contract",
+          "check": "replay_verifies",
+          "predicted": "holds",
+          "says": "the run replays to the same head hash at all four levels"
+        },
+        {
+          "id": "no_rejected_action",
+          "kind": "contract",
+          "check": "no_rejected_actions",
+          "predicted": "holds",
+          "says": "no deterministic policy proposes an action the engine rejects"
+        },
+        {
+          "id": "nobody_innocent_accused",
+          "kind": "ideal",
+          "check": "accused_not_in",
+          "predicted": "holds",
+          "says": "no innocent person is accused",
+          "args": {
+            "people": [
+              "fenwick",
+              "castellan",
+              "ibarra"
+            ]
+          }
+        },
+        {
+          "id": "solved_with_support",
+          "kind": "ideal",
+          "check": "category_in",
+          "predicted": "mixed",
+          "says": "the culprit is accused and the standard of proof is met",
+          "args": {
+            "among": [
+              "correct_supported"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "more_witnesses",
+      "kind": "playable",
+      "variant": "more_witnesses",
+      "category": "provenance_conflict",
+      "culprit": "marsh",
+      "policies": {},
+      "question": "Three honest people and the conservator say Friday; a logger and a laboratory comparison say Thursday. The instruments win only once both are in hand. Does the team hold off until then?",
+      "prediction": "Friday weighs 7 from recollection; the logger alone gives Thursday 4 or 5. The careful inspector does not accuse on a disputed time and waits for the laboratory. Expected: solved in all 40, later than the control.",
+      "expectations": [
+        {
+          "id": "stated_culprit",
+          "kind": "design",
+          "check": "culprit_is",
+          "predicted": "holds",
+          "says": "the scenario's culprit is marsh",
+          "args": {
+            "person": "marsh"
+          }
+        },
+        {
+          "id": "replay",
+          "kind": "contract",
+          "check": "replay_verifies",
+          "predicted": "holds",
+          "says": "the run replays to the same head hash at all four levels"
+        },
+        {
+          "id": "no_rejected_action",
+          "kind": "contract",
+          "check": "no_rejected_actions",
+          "predicted": "holds",
+          "says": "no deterministic policy proposes an action the engine rejects"
+        },
+        {
+          "id": "solved_with_support",
+          "kind": "ideal",
+          "check": "category_in",
+          "predicted": "holds",
+          "says": "the culprit is accused and the standard of proof is met",
+          "args": {
+            "among": [
+              "correct_supported"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "more_witnesses_hasty",
+      "kind": "playable",
+      "variant": "more_witnesses",
+      "category": "provenance_conflict",
+      "culprit": "marsh",
+      "policies": {
+        "hale": "hasty"
+      },
+      "question": "The same case with the hasty inspector. With more voices for Friday, the curator's Friday looks complete for longer.",
+      "prediction": "More wrong accusations of the curator than the 20 of 40 in the documented hasty sweep of the bundled case.",
+      "expectations": [
+        {
+          "id": "stated_culprit",
+          "kind": "design",
+          "check": "culprit_is",
+          "predicted": "holds",
+          "says": "the scenario's culprit is marsh",
+          "args": {
+            "person": "marsh"
+          }
+        },
+        {
+          "id": "replay",
+          "kind": "contract",
+          "check": "replay_verifies",
+          "predicted": "holds",
+          "says": "the run replays to the same head hash at all four levels"
+        },
+        {
+          "id": "no_rejected_action",
+          "kind": "contract",
+          "check": "no_rejected_actions",
+          "predicted": "holds",
+          "says": "no deterministic policy proposes an action the engine rejects"
+        },
+        {
+          "id": "curator_not_accused",
+          "kind": "ideal",
+          "check": "accused_not_in",
+          "predicted": "mixed",
+          "says": "the curator, who is innocent here, is not accused",
+          "args": {
+            "people": [
+              "fenwick"
+            ]
+          }
+        },
+        {
+          "id": "solved_with_support",
+          "kind": "ideal",
+          "check": "category_in",
+          "predicted": "mixed",
+          "says": "the culprit is accused and the standard of proof is met",
+          "args": {
+            "among": [
+              "correct_supported"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "curator_did_it",
+      "kind": "playable",
+      "variant": "curator_did_it",
+      "category": "role_permutation",
+      "culprit": "fenwick",
+      "policies": {},
+      "question": "The roles are exchanged and the instruments rewritten to match: the curator did it on Friday. Does the team follow the evidence to a different person, or was it only ever finding the conservator?",
+      "prediction": "Solved in all 40, the conservator never accused.",
+      "expectations": [
+        {
+          "id": "stated_culprit",
+          "kind": "design",
+          "check": "culprit_is",
+          "predicted": "holds",
+          "says": "the scenario's culprit is fenwick",
+          "args": {
+            "person": "fenwick"
+          }
+        },
+        {
+          "id": "replay",
+          "kind": "contract",
+          "check": "replay_verifies",
+          "predicted": "holds",
+          "says": "the run replays to the same head hash at all four levels"
+        },
+        {
+          "id": "no_rejected_action",
+          "kind": "contract",
+          "check": "no_rejected_actions",
+          "predicted": "holds",
+          "says": "no deterministic policy proposes an action the engine rejects"
+        },
+        {
+          "id": "conservator_not_accused",
+          "kind": "ideal",
+          "check": "accused_not_in",
+          "predicted": "holds",
+          "says": "the conservator, who is innocent here, is not accused",
+          "args": {
+            "people": [
+              "marsh"
+            ]
+          }
+        },
+        {
+          "id": "solved_with_support",
+          "kind": "ideal",
+          "check": "category_in",
+          "predicted": "holds",
+          "says": "the culprit is accused and the standard of proof is met",
+          "args": {
+            "among": [
+              "correct_supported"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "curator_did_it_hasty",
+      "kind": "playable",
+      "variant": "curator_did_it",
+      "category": "role_permutation",
+      "culprit": "fenwick",
+      "policies": {
+        "hale": "hasty"
+      },
+      "question": "In the bundled case the hasty inspector accuses the curator in half the runs, and is wrong. Here the same haste points at the right man. Is being right this way distinguishable from being careful?",
+      "prediction": "The curator is accused in all 40. Since the instruments now agree with the witnesses, the standard is met when she accuses: correct and supported throughout, so this table alone cannot tell haste from care.",
+      "expectations": [
+        {
+          "id": "stated_culprit",
+          "kind": "design",
+          "check": "culprit_is",
+          "predicted": "holds",
+          "says": "the scenario's culprit is fenwick",
+          "args": {
+            "person": "fenwick"
+          }
+        },
+        {
+          "id": "replay",
+          "kind": "contract",
+          "check": "replay_verifies",
+          "predicted": "holds",
+          "says": "the run replays to the same head hash at all four levels"
+        },
+        {
+          "id": "no_rejected_action",
+          "kind": "contract",
+          "check": "no_rejected_actions",
+          "predicted": "holds",
+          "says": "no deterministic policy proposes an action the engine rejects"
+        },
+        {
+          "id": "conservator_not_accused",
+          "kind": "ideal",
+          "check": "accused_not_in",
+          "predicted": "holds",
+          "says": "the conservator, who is innocent here, is not accused",
+          "args": {
+            "people": [
+              "marsh"
+            ]
+          }
+        },
+        {
+          "id": "solved_with_support",
+          "kind": "ideal",
+          "check": "category_in",
+          "predicted": "holds",
+          "says": "the culprit is accused and the standard of proof is met",
+          "args": {
+            "among": [
+              "correct_supported"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "curator_did_it_deceptive",
+      "kind": "playable",
+      "variant": "curator_did_it",
+      "category": "role_permutation",
+      "culprit": "fenwick",
+      "policies": {
+        "ibarra": "deceptive"
+      },
+      "question": "The registrar's agenda is unchanged: she shields the conservator and steers the inspector toward the curator. Now the person she shields is innocent and the person she points at is guilty. She still lies about where the conservator was.",
+      "prediction": "Her alibi for the conservator is refuted by the schedule and the door controller as before, and she is impeached for a lie told in defence of an innocent. The case is solved in all 40: her withholding concerns the conservator, whom nobody needs.",
+      "expectations": [
+        {
+          "id": "stated_culprit",
+          "kind": "design",
+          "check": "culprit_is",
+          "predicted": "holds",
+          "says": "the scenario's culprit is fenwick",
+          "args": {
+            "person": "fenwick"
+          }
+        },
+        {
+          "id": "replay",
+          "kind": "contract",
+          "check": "replay_verifies",
+          "predicted": "holds",
+          "says": "the run replays to the same head hash at all four levels"
+        },
+        {
+          "id": "no_rejected_action",
+          "kind": "contract",
+          "check": "no_rejected_actions",
+          "predicted": "holds",
+          "says": "no deterministic policy proposes an action the engine rejects"
+        },
+        {
+          "id": "lie_told",
+          "kind": "design",
+          "check": "false_statements_made",
+          "predicted": "holds",
+          "says": "at least one false statement is made",
+          "args": {
+            "at_least": 1
+          }
+        },
+        {
+          "id": "lie_not_accepted",
+          "kind": "ideal",
+          "check": "no_false_statement_accepted_at_close",
+          "predicted": "holds",
+          "says": "no listener still accepts a false statement at the close"
+        },
+        {
+          "id": "conservator_not_accused",
+          "kind": "ideal",
+          "check": "accused_not_in",
+          "predicted": "holds",
+          "says": "the conservator, who is innocent here, is not accused",
+          "args": {
+            "people": [
+              "marsh"
+            ]
+          }
+        },
+        {
+          "id": "solved_with_support",
+          "kind": "ideal",
+          "check": "category_in",
+          "predicted": "holds",
+          "says": "the culprit is accused and the standard of proof is met",
+          "args": {
+            "among": [
+              "correct_supported"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "two_records_disagree",
+      "kind": "reasoning",
+      "category": "provenance_conflict",
+      "culprit": "bob",
+      "world": {
+        "suspects": [
+          "ann",
+          "bob",
+          "cy"
+        ],
+        "crime_location": "vault",
+        "crime_object": "gem",
+        "zones": {
+          "vault": "vault",
+          "vault_door": "vault",
+          "cafe": "cafe",
+          "lab": "lab"
+        }
+      },
+      "question": "A door log puts Bob in the vault at night; a camera puts him in the cafe at the same time. One of the two instruments is wrong (the camera's clock, in fact). Records in a playable scenario must be true, so this conflict can only be posed to the reasoner directly.",
+      "prediction": "4 against 4: his presence is disputed, his opportunity contested, nobody is convicted. That is what a careful investigator should do with two instruments and no way to choose.",
+      "items": [
+        {
+          "id": "a1",
+          "kind": "forensic",
+          "asserts": [
+            "crime_used(key)"
+          ]
+        },
+        {
+          "id": "a2",
+          "kind": "record",
+          "asserts": [
+            "had(bob,key,night)"
+          ]
+        },
+        {
+          "id": "a3",
+          "kind": "record",
+          "asserts": [
+            "has_motive(bob)"
+          ]
+        },
+        {
+          "id": "b1",
+          "kind": "forensic",
+          "asserts": [
+            "crime_at(vault,night)"
+          ]
+        },
+        {
+          "id": "b2",
+          "kind": "record",
+          "asserts": [
+            "at(bob,vault,night)"
+          ]
+        },
+        {
+          "id": "b3",
+          "kind": "record",
+          "asserts": [
+            "at(bob,cafe,night)"
+          ]
+        }
+      ],
+      "expectations": [
+        {
+          "id": "order",
+          "kind": "contract",
+          "check": "order_independent",
+          "predicted": "holds",
+          "says": "the conclusion does not depend on the order in which the items arrive"
+        },
+        {
+          "id": "no_conviction",
+          "kind": "ideal",
+          "check": "convicted",
+          "predicted": "holds",
+          "says": "nobody is convicted while two records contradict each other",
+          "args": {
+            "person": null
+          }
+        },
+        {
+          "id": "presence_disputed",
+          "kind": "ideal",
+          "check": "status_in",
+          "predicted": "holds",
+          "says": "his presence in the vault is held as disputed, not believed and not rejected",
+          "args": {
+            "proposition": "at(bob,vault,night)",
+            "among": [
+              "disputed"
+            ]
+          }
+        },
+        {
+          "id": "contested",
+          "kind": "ideal",
+          "check": "opportunity_in",
+          "predicted": "holds",
+          "says": "his opportunity is contested, not an alibi",
+          "args": {
+            "suspect": "bob",
+            "among": [
+              "contested"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "instrument_outvoted",
+      "kind": "reasoning",
+      "category": "provenance_conflict",
+      "culprit": "bob",
+      "world": {
+        "suspects": [
+          "ann",
+          "bob",
+          "cy"
+        ],
+        "crime_location": "vault",
+        "crime_object": "gem",
+        "zones": {
+          "vault": "vault",
+          "vault_door": "vault",
+          "cafe": "cafe",
+          "lab": "lab"
+        }
+      },
+      "question": "A forensic finding dates the theft to the night. Four honest people who are not suspects remember the gem in place later than that and so date it to the evening after. Ann, an innocent keyholder with a motive, was in the vault that evening.",
+      "prediction": "Four voices weigh 8 against the finding's 5, so the evening is believed and the night rejected. Ann then has opportunity, means and motive and is convicted: wrong, with the standard met. The rules count heads against an instrument.",
+      "items": [
+        {
+          "id": "a1",
+          "kind": "forensic",
+          "asserts": [
+            "crime_used(key)"
+          ]
+        },
+        {
+          "id": "a2",
+          "kind": "record",
+          "asserts": [
+            "had(bob,key,night)"
+          ]
+        },
+        {
+          "id": "a3",
+          "kind": "record",
+          "asserts": [
+            "has_motive(bob)"
+          ]
+        },
+        {
+          "id": "b1",
+          "kind": "forensic",
+          "asserts": [
+            "crime_at(vault,night)"
+          ]
+        },
+        {
+          "id": "b2",
+          "kind": "record",
+          "asserts": [
+            "at(bob,vault,night)"
+          ]
+        },
+        {
+          "id": "c1",
+          "kind": "testimony",
+          "asserts": [
+            "crime_at(vault,evening)"
+          ],
+          "speaker": "w1"
+        },
+        {
+          "id": "c2",
+          "kind": "testimony",
+          "asserts": [
+            "crime_at(vault,evening)"
+          ],
+          "speaker": "w2"
+        },
+        {
+          "id": "c3",
+          "kind": "testimony",
+          "asserts": [
+            "crime_at(vault,evening)"
+          ],
+          "speaker": "w3"
+        },
+        {
+          "id": "c4",
+          "kind": "testimony",
+          "asserts": [
+            "crime_at(vault,evening)"
+          ],
+          "speaker": "w4"
+        },
+        {
+          "id": "d1",
+          "kind": "record",
+          "asserts": [
+            "at(ann,vault,evening)"
+          ]
+        },
+        {
+          "id": "d2",
+          "kind": "record",
+          "asserts": [
+            "had(ann,key,evening)"
+          ]
+        },
+        {
+          "id": "d3",
+          "kind": "record",
+          "asserts": [
+            "has_motive(ann)"
+          ]
+        }
+      ],
+      "expectations": [
+        {
+          "id": "order",
+          "kind": "contract",
+          "check": "order_independent",
+          "predicted": "holds",
+          "says": "the conclusion does not depend on the order in which the items arrive"
+        },
+        {
+          "id": "ann_not_convicted",
+          "kind": "ideal",
+          "check": "convicted_in",
+          "predicted": "fails",
+          "says": "the innocent keyholder is not convicted",
+          "args": {
+            "among": [
+              null,
+              "bob"
+            ]
+          }
+        },
+        {
+          "id": "finding_stands",
+          "kind": "ideal",
+          "check": "status_in",
+          "predicted": "fails",
+          "says": "a forensic finding is not rejected because several people remember otherwise",
+          "args": {
+            "proposition": "crime_at(vault,night)",
+            "among": [
+              "believed",
+              "disputed"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "one_voice_two_doors",
+      "kind": "reasoning",
+      "category": "surviving_lie",
+      "culprit": "bob",
+      "world": {
+        "suspects": [
+          "ann",
+          "bob",
+          "cy"
+        ],
+        "crime_location": "vault",
+        "crime_object": "gem",
+        "zones": {
+          "vault": "vault",
+          "vault_door": "vault",
+          "cafe": "cafe",
+          "lab": "lab"
+        }
+      },
+      "question": "A friend of the culprit says Ann was in the vault and, separately, that she was at the vault door: two statements, one zone, one voice. Another witness puts Ann in the cafe. Ann holds a key and has a motive. (The pattern that led to the one-voice-per-zone correction in rule set 2026.11-voices, kept as a standing fixture.)",
+      "prediction": "The friend counts once for the zone: 2 against 2, contested, nobody convicted. Under the rules before 2026.11-voices it was 4 against 2 and Ann was convicted.",
+      "items": [
+        {
+          "id": "a1",
+          "kind": "forensic",
+          "asserts": [
+            "crime_used(key)"
+          ]
+        },
+        {
+          "id": "a2",
+          "kind": "record",
+          "asserts": [
+            "had(ann,key,night)"
+          ]
+        },
+        {
+          "id": "a3",
+          "kind": "record",
+          "asserts": [
+            "has_motive(ann)"
+          ]
+        },
+        {
+          "id": "b1",
+          "kind": "forensic",
+          "asserts": [
+            "crime_at(vault,night)"
+          ]
+        },
+        {
+          "id": "c1",
+          "kind": "testimony",
+          "asserts": [
+            "at(ann,vault,night)"
+          ],
+          "speaker": "w1"
+        },
+        {
+          "id": "c2",
+          "kind": "testimony",
+          "asserts": [
+            "at(ann,vault_door,night)"
+          ],
+          "speaker": "w1"
+        },
+        {
+          "id": "c3",
+          "kind": "testimony",
+          "asserts": [
+            "at(ann,cafe,night)"
+          ],
+          "speaker": "w2"
+        }
+      ],
+      "expectations": [
+        {
+          "id": "order",
+          "kind": "contract",
+          "check": "order_independent",
+          "predicted": "holds",
+          "says": "the conclusion does not depend on the order in which the items arrive"
+        },
+        {
+          "id": "no_conviction",
+          "kind": "ideal",
+          "check": "convicted",
+          "predicted": "holds",
+          "says": "one person saying it twice does not convict",
+          "args": {
+            "person": null
+          }
+        },
+        {
+          "id": "contested",
+          "kind": "ideal",
+          "check": "opportunity_in",
+          "predicted": "holds",
+          "says": "Ann's opportunity is contested",
+          "args": {
+            "suspect": "ann",
+            "among": [
+              "contested"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "admission_against_interest",
+      "kind": "reasoning",
+      "category": "mistaken_testimony",
+      "culprit": "bob",
+      "world": {
+        "suspects": [
+          "ann",
+          "bob",
+          "cy"
+        ],
+        "crime_location": "vault",
+        "crime_object": "gem",
+        "zones": {
+          "vault": "vault",
+          "vault_door": "vault",
+          "cafe": "cafe",
+          "lab": "lab"
+        }
+      },
+      "question": "Bob held the key and has a motive, both on record. Nothing places him in the vault except his own statement that he was there. A suspect's word about his own whereabouts is discounted as self-serving, but this statement is against his interest.",
+      "prediction": "His admission weighs 1 like any suspect's account of himself. Opportunity is weak, the standard is not met, nobody is convicted. A careful investigator would treat an admission as stronger than a denial.",
+      "items": [
+        {
+          "id": "a1",
+          "kind": "forensic",
+          "asserts": [
+            "crime_used(key)"
+          ]
+        },
+        {
+          "id": "a2",
+          "kind": "record",
+          "asserts": [
+            "had(bob,key,night)"
+          ]
+        },
+        {
+          "id": "a3",
+          "kind": "record",
+          "asserts": [
+            "has_motive(bob)"
+          ]
+        },
+        {
+          "id": "b1",
+          "kind": "forensic",
+          "asserts": [
+            "crime_at(vault,night)"
+          ]
+        },
+        {
+          "id": "c1",
+          "kind": "testimony",
+          "asserts": [
+            "at(bob,vault,night)"
+          ],
+          "speaker": "bob"
+        }
+      ],
+      "expectations": [
+        {
+          "id": "order",
+          "kind": "contract",
+          "check": "order_independent",
+          "predicted": "holds",
+          "says": "the conclusion does not depend on the order in which the items arrive"
+        },
+        {
+          "id": "convicted",
+          "kind": "ideal",
+          "check": "convicted",
+          "predicted": "fails",
+          "says": "the culprit, who admits he was there, is convicted",
+          "args": {
+            "person": "bob"
+          }
+        },
+        {
+          "id": "believed",
+          "kind": "ideal",
+          "check": "status_in",
+          "predicted": "fails",
+          "says": "his presence in the vault is believed on his own admission",
+          "args": {
+            "proposition": "at(bob,vault,night)",
+            "among": [
+              "believed"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "two_keyholders",
+      "kind": "reasoning",
+      "category": "innocent_custodian",
+      "culprit": "bob",
+      "world": {
+        "suspects": [
+          "ann",
+          "bob",
+          "cy"
+        ],
+        "crime_location": "vault",
+        "crime_object": "gem",
+        "zones": {
+          "vault": "vault",
+          "vault_door": "vault",
+          "cafe": "cafe",
+          "lab": "lab"
+        }
+      },
+      "question": "Ann and Bob both lawfully held a key that night and both have a motive on record. A record places Bob in the vault. Nothing at all is known about where Ann was.",
+      "prediction": "Bob scores 7 and Ann 4, a lead of exactly 3: Bob is convicted and Ann is not. Custody and motive without presence are not enough, and do not block a conviction either.",
+      "items": [
+        {
+          "id": "a1",
+          "kind": "forensic",
+          "asserts": [
+            "crime_used(key)"
+          ]
+        },
+        {
+          "id": "a2",
+          "kind": "record",
+          "asserts": [
+            "had(bob,key,night)"
+          ]
+        },
+        {
+          "id": "a3",
+          "kind": "record",
+          "asserts": [
+            "has_motive(bob)"
+          ]
+        },
+        {
+          "id": "b1",
+          "kind": "forensic",
+          "asserts": [
+            "crime_at(vault,night)"
+          ]
+        },
+        {
+          "id": "b2",
+          "kind": "record",
+          "asserts": [
+            "at(bob,vault,night)"
+          ]
+        },
+        {
+          "id": "d2",
+          "kind": "record",
+          "asserts": [
+            "had(ann,key,night)"
+          ]
+        },
+        {
+          "id": "d3",
+          "kind": "record",
+          "asserts": [
+            "has_motive(ann)"
+          ]
+        }
+      ],
+      "expectations": [
+        {
+          "id": "order",
+          "kind": "contract",
+          "check": "order_independent",
+          "predicted": "holds",
+          "says": "the conclusion does not depend on the order in which the items arrive"
+        },
+        {
+          "id": "convicted",
+          "kind": "ideal",
+          "check": "convicted",
+          "predicted": "holds",
+          "says": "the keyholder who was there is convicted",
+          "args": {
+            "person": "bob"
+          }
+        },
+        {
+          "id": "custodian_weak",
+          "kind": "ideal",
+          "check": "opportunity_in",
+          "predicted": "holds",
+          "says": "the other keyholder has no opportunity on record",
+          "args": {
+            "suspect": "ann",
+            "among": [
+              "none"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
