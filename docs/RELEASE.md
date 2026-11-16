@@ -20,7 +20,7 @@ The local checks below were run on Windows 11. The hosted checks are in the next
 
 ### Hosted CI (GitHub Actions, Ubuntu)
 
-Run `43847562623` on `main` passed all four jobs.
+Run `43946740529` on `main` (commit `d0bb67d`) passed all four jobs.
 
 | Job | Result |
 |---|---|
@@ -28,6 +28,14 @@ Run `43847562623` on `main` passed all four jobs.
 | backend, Python 3.13 | the same |
 | frontend, Node 22 | `npm ci`, `npm run typecheck` and `npm run build` pass |
 | browser, Chrome | 32 passed |
+
+History of hosted runs on `main`:
+
+- `43847562623` (`2959645`): all four jobs passed.
+- `43943984867` (`9e671c1`): backend and frontend jobs passed. The browser job failed twice on
+  `second-scenario.spec.ts`. The test read the run selector while an older run at tick 0 was still on
+  screen, so it saw the wrong run. The application was correct; the test waited on an ambiguous label.
+- `43946740529` (`d0bb67d`): the test now waits for the run it created, and all four jobs passed.
 
 The pinned runs and the recorded laboratory results are asserted by the test suite, so they reproduce on
 Linux as well as on Windows.
@@ -38,7 +46,7 @@ warning, not a failure.
 ## Not verified
 
 - macOS.
-- Linux other than the Ubuntu runner image, and Windows other than the one machine used here.
+- Linux other than the Ubuntu runner image, and Windows other than the one machine used for local runs.
 - Python 3.12 in CI. It was tested locally only; the CI matrix is 3.11 and 3.13.
 - Firefox and Safari. The browser tests ran on Edge locally and on Chrome in CI.
 - Node 20, and Node 24 in CI (24 was tried locally).
@@ -62,8 +70,8 @@ on purpose. Run them locally after any change to the reasoner, a policy or the r
 
 If `test_pinned_runs.py` or `test_lab_results.py` fails on another platform, treat it as a possible
 determinism defect, not as runner noise, and do not refresh the expected hashes to make it pass. The
-cross-site browser test skips with an annotation
-if the runner's Chrome blocks the request itself; a skip there means that check did not run.
+cross-site browser test skips with an annotation if the runner's Chrome blocks the request itself; a
+skip there means that check did not run.
 
 ## Known issues
 
@@ -99,6 +107,7 @@ stored runs and recorded hashes are unaffected. It does appear in `GET /api/heal
 Later: lazy compatibility assessment with an explicit re-verify action in the interface, a wheel that
 includes the interface and the recorded collection, challenges written by someone other than the author
 of the rules, a smaller bundle, and `httpx2` in the test dependencies.
+
 ## Security assumptions
 
 - **Single user, one machine, no authentication.** Anyone, or any program, that can send HTTP to the port
