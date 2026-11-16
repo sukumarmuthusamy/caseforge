@@ -1,12 +1,12 @@
 # Release status
 
-CaseForge is at version `0.1.0`. There is no tag, no changelog and no packaged release yet. This page
-records what has actually been run, on what, and what is still missing before a 1.0. Passing tests are
-not the same thing as a release, so the two are kept apart here.
+CaseForge is at version `1.0.0rc1` (npm `1.0.0-rc.1`, proposed tag `v1.0.0-rc.1`), a first release
+candidate. See [CHANGELOG.md](../CHANGELOG.md). This page records what has actually been run, and on what.
+Passing tests are not the same thing as a release, so the two are kept apart here.
 
 ## What has been verified
 
-All of the checks below were run on Windows 11. Nothing has been run on Linux or macOS by hand.
+The local checks below were run on Windows 11. The hosted checks are in the next table.
 
 | Check | How | Result |
 |---|---|---|
@@ -18,16 +18,30 @@ All of the checks below were run on Windows 11. Nothing has been run on Linux or
 | Local API guard | `tests/test_netguard.py` (68 cases, one of them over a real uvicorn socket) and `e2e/local-api.spec.ts` (a page of another site in a real browser) | pass; the browser test fails when the guard is removed |
 | Documented sweeps | all 720 head hashes in the README tables recompared after the stored-run compatibility change (DECISIONS D25) | identical. Later changes left the pinned runs in `tests/test_pinned_runs.py` and the recorded laboratory results in `tests/test_lab_results.py` unchanged |
 
+### Hosted CI (GitHub Actions, Ubuntu)
+
+Run `43847562623` on `main` passed all four jobs.
+
+| Job | Result |
+|---|---|
+| backend, Python 3.11 | 658 passed, 6 strict expected failures; scenario lint, `lab check`, `demo --seed 7` and `lab reproduce control --seed 0` pass |
+| backend, Python 3.13 | the same |
+| frontend, Node 22 | `npm ci`, `npm run typecheck` and `npm run build` pass |
+| browser, Chrome | 32 passed |
+
+The pinned runs and the recorded laboratory results are asserted by the test suite, so they reproduce on
+Linux as well as on Windows.
+
 Starlette warns that its test client will want `httpx2` in a future version. That is a deprecation
 warning, not a failure.
 
 ## Not verified
 
-- Linux and macOS.
-- A hosted GitHub Actions run. The workflow exists and every command in it has been run by hand, but it
-  has never run on a hosted runner.
-- Chrome, Firefox and Safari. The browser tests have only run on Edge locally; CI is set up to use Chrome.
-- Node 20.
+- macOS.
+- Linux other than the Ubuntu runner image, and Windows other than the one machine used here.
+- Python 3.12 in CI. It was tested locally only; the CI matrix is 3.11 and 3.13.
+- Firefox and Safari. The browser tests ran on Edge locally and on Chrome in CI.
+- Node 20, and Node 24 in CI (24 was tried locally).
 - A real model behind the opt-in `llm` policy. Tests use a stub and never touch a network.
 - Accessibility. Colour is paired with text in the outcome bars, but keyboard paths and screen-reader
   labels have not been reviewed beyond what Playwright's role queries imply.
@@ -46,9 +60,9 @@ The 720-run sweep comparison and the 520-run laboratory collection (about four m
 on purpose. Run them locally after any change to the reasoner, a policy or the reducer
 (see [CONTRIBUTING.md](../CONTRIBUTING.md)).
 
-The first hosted run will be the first time this workflow runs anywhere. If `test_pinned_runs.py` or
-`test_lab_results.py` fails on Linux, treat it as a possible determinism defect, not as runner noise, and
-do not refresh the expected hashes to make it pass. The cross-site browser test skips with an annotation
+If `test_pinned_runs.py` or `test_lab_results.py` fails on another platform, treat it as a possible
+determinism defect, not as runner noise, and do not refresh the expected hashes to make it pass. The
+cross-site browser test skips with an annotation
 if the runner's Chrome blocks the request itself; a skip there means that check did not run.
 
 ## Known issues
@@ -62,26 +76,29 @@ if the runner's Chrome blocks the request itself; a skip there means that check 
 - The interface bundle is about 700 kB and is not code-split. The layout needs a wide window (minimum
   width 1180 px); there is no phone layout.
 
-## Before 1.0
+## What this release candidate promises
 
-1. **A green hosted CI run** on Ubuntu with Python 3.11 and 3.13 and Chrome. Until then, Linux support
-   and the declared Python floor are claims.
-2. **Decide what 1.0 promises.** A reasonable scope is: local, single-user, offline, run from a clone.
-   The promise would cover the event format of `ENGINE_VERSION` 3 and its hash chain, the documented CLI
-   and API for local use, and the stored-run behaviour described in the README, which has two distinct
-   cases. A run recorded by a different engine version or scenario version is listed but cannot be opened.
-   A run of the current format that the current rules would not reproduce stays readable, verifiable and
-   branchable from before the divergence, but cannot be continued. Nothing is rewritten in either case.
-   The laboratory is an internally pre-registered collection, not an independent benchmark. A packaged
-   wheel with the interface, multi-user use, authentication and real-model support are out of scope.
-3. **Version and changelog.** The version is `0.1.0` in `backend/pyproject.toml`,
-   `backend/caseforge/__init__.py` and `frontend/package.json`. A first candidate could be `1.0.0rc1` in
-   Python and `1.0.0-rc.1` in npm.
+Scope: local, single-user, offline, run from a clone. The promise covers the event format of
+`ENGINE_VERSION` 3 and its hash chain, the documented CLI and API for local use, and the stored-run
+behaviour described in the README, which has two distinct cases. A run recorded by a different engine
+version or scenario version is listed but cannot be opened. A run of the current format that the current
+rules would not reproduce stays readable, verifiable and branchable from before the divergence, but cannot
+be continued. Nothing is rewritten in either case.
+
+The laboratory is an internally pre-registered collection, not an independent benchmark. A packaged wheel
+with the interface, multi-user use, authentication and real-model support are out of scope.
+
+## Versioning
+
+The package version is independent of the engine and the rules. `1.0.0rc1` in `backend/pyproject.toml` and
+`backend/caseforge/__init__.py`, and `1.0.0-rc.1` in `frontend/package.json` and its lockfile, are the same
+version in each ecosystem's notation. `ENGINE_VERSION`, `RULES_VERSION`, the scenario versions and the
+laboratory manifest are unchanged. The package version is not part of any event, hash or replay source, so
+stored runs and recorded hashes are unaffected. It does appear in `GET /api/health`.
 
 Later: lazy compatibility assessment with an explicit re-verify action in the interface, a wheel that
 includes the interface and the recorded collection, challenges written by someone other than the author
 of the rules, a smaller bundle, and `httpx2` in the test dependencies.
-
 ## Security assumptions
 
 - **Single user, one machine, no authentication.** Anyone, or any program, that can send HTTP to the port

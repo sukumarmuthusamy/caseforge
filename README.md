@@ -63,13 +63,13 @@ of five categories, so being right and being justified are never added together:
 
 ## Requirements
 
-- Python 3.11 or newer. Tested with 3.11, 3.12 and 3.13.
-- Node.js 22 or newer, to build the web interface. Tested with 22 and 24.
+- Python 3.11 or newer. Tested with 3.11 and 3.13 in CI, and with 3.12 locally.
+- Node.js 22 or newer, to build the web interface. Tested with 22 in CI, and with 22 and 24 locally.
 - A Chromium-based browser for the browser tests (Edge or Chrome). Not needed to use CaseForge.
 
-Development and testing so far have been on Windows 11. Linux and macOS have not been tested by hand; the
-GitHub Actions workflow runs on Ubuntu. See [docs/RELEASE.md](docs/RELEASE.md) for exactly what has been
-verified.
+Development was done on Windows 11, where the tests were also run locally. GitHub Actions runs the backend
+tests, the frontend build and the browser tests on Ubuntu. macOS has not been tested. See
+[docs/RELEASE.md](docs/RELEASE.md) for exactly what has been verified.
 
 ## Installation
 
@@ -327,8 +327,7 @@ No browser is downloaded. The tests use Edge on Windows and Chrome elsewhere. Se
 the Python interpreter.
 
 The GitHub Actions workflow runs the backend tests on Python 3.11 and 3.13, the CLI checks, the frontend
-type-check and build, and the browser tests in Chrome, all on Ubuntu. It has not yet run on a hosted
-runner.
+type-check and build, and the browser tests in Chrome, all on Ubuntu.
 
 ## Optional: model-backed agents
 
@@ -395,7 +394,8 @@ Further reading:
   [docs/SCENARIO_QUIET_SUBSTITUTION.md](docs/SCENARIO_QUIET_SUBSTITUTION.md): the two cases, and how to
   write another.
 - [docs/LAB.md](docs/LAB.md): the counterfactual laboratory.
-- [docs/RELEASE.md](docs/RELEASE.md): what has been verified, known issues, and what remains before 1.0.
+- [CHANGELOG.md](CHANGELOG.md): what the release candidate contains.
+- [docs/RELEASE.md](docs/RELEASE.md): what has been verified, known issues, and what the release promises.
 
 To work on the interface, run `python -m caseforge serve` in one terminal and `npm run dev` in `frontend/`
 in another, then open <http://localhost:5173>.

@@ -65,8 +65,8 @@ jobs:
 
   browser:
     # Drives the built UI against the real server in the runner's own Chrome. Nothing is downloaded
-    # for it. It has not been seen to run on a hosted runner yet (docs/RELEASE.md), so a failure here
-    # should be read before it is trusted either way.
+    # for it. The cross-site test skips with an annotation if Chrome blocks the request itself; a skip
+    # means that check did not run (docs/RELEASE.md).
     needs: [backend, frontend]
     runs-on: ubuntu-latest
     timeout-minutes: 25
